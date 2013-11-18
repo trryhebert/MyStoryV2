@@ -1,0 +1,42 @@
+﻿@model shareyourstory.net.Models.RegisterModel
+@{
+    ViewBag.Title = "Register";
+}
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary()
+    
+    <div class="containerBig" style="margin-top:0;">
+        <div class="containerInner">
+            <div class="containerTitle">
+                <div class="containerTitleText">Registration Form</div>
+            </div>
+            <div style="clear:both;"></div>
+            <div class="containerStory">
+                <div class="formItem">
+                    <div class="formLabel">@Html.LabelFor(m => m.UserName)</div>
+                    <div class="formInput2">@Html.TextBoxFor(m => m.UserName)</div>
+                    <div class="clear"></div>
+                </div>        
+                <div class="formItem">
+                    <div class="formLabel">@Html.LabelFor(m => m.Password)</div>
+                    <div class="formInput2">@Html.PasswordFor(m => m.Password)</div>
+                    <div class="clear"></div>
+                </div>        
+                <div class="formItem">
+                    <div class="formLabel">@Html.LabelFor(m => m.ConfirmPassword)</div>
+                    <div class="formInput2">@Html.PasswordFor(m => m.ConfirmPassword)</div>
+                    <div class="clear"></div>
+                </div>        
+                <div class="formBottom">
+                    <input type="submit" value="Register" />
+                </div>        
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

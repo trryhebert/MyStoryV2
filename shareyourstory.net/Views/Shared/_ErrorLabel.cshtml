@@ -1,0 +1,18 @@
+﻿@{
+    string errorMsg = "";
+    string visibility = "hidden";
+    if (ViewData["ErrorMsg"] != null)
+    {
+        errorMsg = ViewData["ErrorMsg"].ToString();
+        visibility = "visible";
+    }
+    Session["ErrorMsg"] = null;
+        
+}
+<div style="width:100%; visibility:@visibility">
+    <div id="error">
+        <span style="font-weight:bold">There was a problem while loading the page: </span>
+        @errorMsg
+    </div>
+</div>
+

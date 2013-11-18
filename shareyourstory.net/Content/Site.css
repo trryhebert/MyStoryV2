@@ -1,0 +1,92 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+body, html{   height: 98%;   padding: 0;}
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video, m1 {
+  margin: 0;  padding: 0;  border: 0;  font: inherit;  font-size: 100%;  vertical-align: baseline;  font-family:arial;  
+}
+
+body { background-color: #F5F7DF; font-family: Arial; font-size:11px; line-height:14px; text-align:center;}
+h1 { font-size: 18pt; line-height: 20pt; margin-bottom: 10px;}
+.clear {clear:both;}
+.topBar {background-color: #C4D469; width: 100%;}
+.topBarLogo {max-width:1000px; width:95%; margin: 0px auto 0px auto; height:50px; text-align:left; padding-top:24px; } /*background-image:url('images/bg.png'); background-repeat:no-repeat;}*/
+.logo {float:left; max-width: 332px; width: 70%; height:35px; background-image:url('images/logoGreen.jpg'); background-repeat:no-repeat; background-size:100%;}
+.topLogin {float:right; color:#485014; font-size:12px; padding-right:5px;}
+.topLogin a{color:#485014; text-decoration:none;}
+.topMenu {background-color: #A7B458; width: 100%; height:30px;}
+.topMenuUnder {background-color: #454F08; width: 100%; height:32px;}
+.topMenuBar {max-width:1000px; width:95%; margin: 0px auto 0px auto; text-align:left;}
+.topMenuItem {background-color: #828E3C; margin-top:5px; color:white; padding-left:8px; padding-right:8px; padding-top:2px; padding-bottom:3px; float:left; margin-right:10px; font-size:12px; font-weight:bold; text-decoration:none;}
+.genericLink {color:#828E3C; padding-bottom:10px; font-size:11px; font-weight:bold; text-decoration:none;}
+.genericText {color:#828E3C; padding-left:8px; padding-bottom:10px; margin-right:10px; font-size:11px; font-weight:bold;}
+
+.mainContainer {max-width:1000px; width:95%; margin: 15px auto 0px auto; text-align:left; margin: 30px auto 0px auto !IE7;}
+.mainLeft {float:left; width:80%;}
+.mainRight {float:right; width:20%; margin-top:5px;}
+
+.containerBig {background-color:white; width:90%;}
+.containerSmall {float:left; background-color:white; width:43%; margin-top:4%;}
+.containerInner {padding:10px;}
+.containerSeparater {float:left; width:4%;}
+.containerTitle {float:left; background-color:#E4E8C5; color:#0D3D8E; font-size:18px; font-weight:bold; width:100%; height:30px;}
+.containerTitleText {float:left; margin-left:10px; line-height:30px;}
+.containerStory {margin:10px; margin-top:8px; width:100%; margin-bottom:0px; width:95%;}
+.containerStorySmall {margin:10px; margin-top:8px; width:100%; margin-bottom:0px; width:95%;}
+.storyTitle {color:#454E07; font-weight:bold; line-height:18px; padding-top:15px;}
+.storyText {color:#000000; font-weight:normal; padding-bottom:10px;}
+.storyText2 {color:#000000; font-weight:normal; padding-top:10px; padding-bottom:10px;}
+
+.imgStar {width:32px; height:31px; background-image:url('images/starGreen.jpg'); background-repeat:no-repeat; float:left; margin-top:2px;}
+.imgThumb {width:32px; height:31px; background-image:url('images/thumbGreen.jpg'); background-repeat:no-repeat; float:left; margin-top:2px;}
+.imgBooks {width:57px; height:31px; background-image:url('images/booksGreen.jpg'); background-repeat:no-repeat; float:left; margin-top:2px;}
+
+.search {padding-top:5px;}
+.searchText {float:left; width:80px;}
+.searchInput {float:left; width: 160px;}
+.searchInput input {padding-left:2px;}
+.searchInput select {width: 150px;}
+.searchButton {float:left;}
+.searchButton input {width: 80px;}
+
+.sort {width:90%;}
+.sortInner {float:right;}
+.sort select {height:18px; font-size:10px; width:100px;}
+.pageLeft { margin-top:2px; background: url('../Content/images/arrowLeft.png') no-repeat; display:block; width: 10px; height: 11px; float:left; text-indent: -9999px; /* hides the link text */ } 
+.pageRight { margin-top:2px; background: url('../Content/images/arrowRight.png') no-repeat; display:block; width: 10px; height: 11px; float:left; text-indent: -9999px; /* hides the link text */ } 
+.pageLeftD { margin-top:2px; background: url('../Content/images/arrowLeftD.png') no-repeat; display:block; width: 10px; height: 11px; float:left; text-indent: -9999px; /* hides the link text */ } 
+.pageRightD { margin-top:2px; background: url('../Content/images/arrowRightD.png') no-repeat; display:block; width: 10px; height: 11px; float:left; text-indent: -9999px; /* hides the link text */ } 
+
+.formItem {padding-top:5px;}
+.formLabel {float:left; width:100px;}
+.formInput {float:left;}
+.formInput input{width:150px;}
+.formInput2 {float:left;}
+.formInput2 input{width:400px;}
+.formBottom {text-align:center; padding-top:15px;}
+
+.copyrights {background-color: #454F08; width: 100%; color:white; font-weight:bold; padding-top:5px; margin-top:40px; height:22px; height:26px !IE7;}
+#error 
+{
+    border: 1px dotted red;
+    color: Red;
+    width: 80%;
+    text-align:left;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+     margin-left: 10%;    
+     margin-right: 10%; padding: 10px 10px 10px 10px
+}

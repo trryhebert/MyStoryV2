@@ -1,0 +1,54 @@
+﻿@model shareyourstory.net.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+}
+
+<div class="containerSmall" style="margin-top:0;">
+    <div class="containerInner">
+        <div class="containerTitle">
+            <div class="containerTitleText">Use a local account to log in.</div>
+        </div>
+        <div style="clear:both;"></div>
+        <div class="containerStorySmall">
+            @using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+                @Html.AntiForgeryToken()
+                @Html.ValidationSummary(true)
+                
+                <div class="formItem">
+                    <div class="formLabel">@Html.LabelFor(m => m.UserName)</div>
+                    <div class="formInput">@Html.TextBoxFor(m => m.UserName) @Html.ValidationMessageFor(m => m.UserName)</div>
+                    <div class="clear"></div>
+                </div>        
+                <div class="formItem">
+                    <div class="formLabel">@Html.LabelFor(m => m.Password)</div>
+                    <div class="formInput">@Html.PasswordFor(m => m.Password) @Html.ValidationMessageFor(m => m.Password)</div>
+                    <div class="clear"></div>
+                </div>        
+                <div class="formBottom">
+                    <input type="submit" value="Log in" />
+                    <br /><br />
+                    @Html.CheckBoxFor(m => m.RememberMe) @Html.LabelFor(m => m.RememberMe, new { @class = "checkbox" })
+                    <br />
+                    @Html.ActionLink("Register", "Register") if you don't have an account.
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="containerSeparater">&nbsp;</div>
+<div class="containerSmall" style="margin-top:0;">
+    <div class="containerInner">
+        <div class="containerTitle">
+            <div class="containerTitleText">Use another service to log in.</div>
+        </div>
+        <div style="clear:both;"></div>
+        <div class="containerStorySmall">
+            @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })            
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

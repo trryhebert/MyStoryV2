@@ -1,0 +1,167 @@
+﻿@model shareurstorydb.StoriesListModel
+                      
+@{
+    ViewBag.Title = "View Post";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*@{
+    string pageurl = @Url.Action("ViewPost", "http://shareyourstory.dyndns-web.com:50418/Home/", new { id = @Model.Stories[0].ID });
+}*@
+
+<script src="@Url.Content("~/Scripts/app-viewpost.js")" language="javascript" type="text/javascript"></script>
+
+<div id="fb-root"></div>
+<script src="http://connect.facebook.net/en_US/all.js#appId=@ViewData["AppID"]&amp;xfbml=1"></script>
+<script type="text/javascript">
+    FB.Event.subscribe('edge.create', function (href, widget) {
+        $.ajax({
+            url: 'http://shareyourstory.dyndns-web.com:50418/Home/FBLike',
+            data: { id: @Model.Stories[0].ID },
+            success: function (response) {
+                //alert(response);
+                var test = 'test';
+            },
+            error: function (e) {
+                //alert('An error occured');
+                alert(e.responseText);
+            }
+        });
+        
+    });
+
+    FB.Event.subscribe('edge.remove', 
+      function(response) { 
+          $.ajax({
+              url: 'http://shareyourstory.dyndns-web.com:50418/Home/FBUnlike',
+              data: { id: @Model.Stories[0].ID },
+            success: function (response) {
+                //alert(response);
+                var test = 'test';
+            },
+            error: function (e) {
+                //alert('An error occured');
+                alert(e.responseText);
+            }
+        });
+      } 
+    ); 
+
+    function fbs_click() {
+        $.ajax({
+            url: 'http://shareyourstory.dyndns-web.com:50418/Home/FBShare',
+            data: { id: @Model.Stories[0].ID },
+            success: function (response) {
+                //alert(response);
+                var test = 'test';
+            },
+            error: function (e) {
+                //alert('An error occured');
+                alert(e.responseText);
+            }
+        });
+    }
+</script>
+
+<div class="containerBig">
+    <div class="containerInner">
+        <div class="containerTitle">
+            <div class="containerTitleText">@Html.Raw(Model.Stories[0].Title) </div><div style="font-size:14px; float:right; padding-right:10px; padding-top:10px;">by @Html.Raw(Model.Stories[0].Name.ToString())</div>
+        </div>
+        <div style="clear:both;"></div>
+        <div class="containerStory">
+            <div style="float:left;">
+                <div style="float:left; width:90px; overflow:hidden;">
+                    <fb:like href="http://shareyourstory.dyndns-web.com:50418/Home/@Model.Stories[0].ID" send="false" layout="button_count" show_faces="false" font="lucida grande" />
+                </div>
+                @*    <a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php" 
+                        share_url="http://shareyourstory.dyndns-web.com:50418/Home/ViewPost/2" onclick="return fbs_click()">Share</a>
+                    <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script> *@
+                @*    <a rel="nofollow" href="http://www.facebook.com/share.php?u=http://shareyourstory.dyndns-web.com:50418/Home/ViewPost/@Model.Stories[0].ID" 
+                    onclick="return fbs_click()" target="_blank">Share on Facebook</a>*@
+                <div style="float:left;">
+                    <style> html .fb_share_button { display: -moz-block; display:block; color:#3B5998; line-height:18px; width:60px; height:21px; background:url('/Content/images/fbshare_bg.jpg') no-repeat top right; background-size: 60px 20px; margin-left:5px; padding-top:1px; }</style>
+                    <a rel="nofollow" href="http://www.facebook.com/share.php?u=u=http://shareyourstory.dyndns-web.com:50418/Home/ViewPost/@Model.Stories[0].ID" 
+                        class="fb_share_button" onclick="return fbs_click()" target="_blank" style="text-decoration:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Share</a> 
+                </div>
+            </div>
+            <div style="float:right;">
+                <b>Created Date:</b> @Html.Raw(Model.Stories[0].CreateDate.ToString("MMMM dd, yyyy")) &nbsp;|&nbsp;
+                <b>Likes:</b> @Html.Raw(Model.Stories[0].Likes.ToString())
+            </div>
+            <div style="clear:both; height:10px;"></div>
+
+            <p>@Html.Raw(Model.Stories[0].Post)</p>
+            <div style="clear:both; height:20px;"></div>
+        </div>
+        <div class="containerTitle">
+            <div class="containerTitleText">Comments</div>
+        </div>
+        <div style="clear:both;"></div>
+        <div class="">
+            <script type="text/javascript" src='@Url.Content("~/Scripts/tiny_mce/tiny_mce.js")'></script>
+            <script type="text/javascript">
+                tinyMCE.init({
+                    // General options
+                    mode: "textareas",
+                    theme: "advanced",
+                    skin: "o2k7",
+                    plugins: "autolink,lists,pagebreak,style,layer,table,advhr,advimage,advlink,emotions,iespell,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template,inlinepopups",
+
+                    // Theme options
+                    theme_advanced_buttons1: "bold,italic,underline,|,bullist,numlist",
+                    theme_advanced_buttons2: "",
+                    theme_advanced_buttons3: "",
+                    theme_advanced_toolbar_location: "top",
+                    theme_advanced_toolbar_align: "left",
+                    theme_advanced_resizing: true,
+
+                    // Example word content CSS (should be your site CSS) this one removes paragraph margins
+                    content_css: "css/word.css",
+
+                    // Drop lists for link/image/media/template dialogs
+                    template_external_list_url: "lists/template_list.js",
+                    external_link_list_url: "lists/link_list.js",
+                    external_image_list_url: "lists/image_list.js",
+                    media_external_list_url: "lists/media_list.js",
+
+                    // Replace values for the template plugin
+                    template_replace_values: {
+                        username: "Some User",
+                        staffid: "991234"
+                    }
+                });
+            </script>
+
+            @using (Html.BeginForm("ViewPost", "Home"))
+            {
+                @Html.HiddenFor(model => model.Stories[0].ID, new { id = "hdnStoryID", name = "hdnStoryID" })
+                @Html.TextArea("txtComment", new { id = "txtComment", style = "width: 100%; height:80px;" })
+                <br />
+                <input type="submit" value="Comment" name="btnSubmit" id="btnSubmit" /><span id="lblErrorLogin" style="display:none;"><i>*Please login using the Facebook login button at the top right of this page to post your comment.</i></span>
+                <script language="javascript" type="text/javascript">
+                    $(document).ready(function () {
+                        if ($("#hdnUserID").val() == "0") {
+                            $('input[name="btnSubmit"]').attr('disabled', 'disabled');
+                            $("#lblErrorLogin").css("display", "block");
+                        }
+                    });                
+                </script>
+            }
+        </div>
+
+        <div style="clear:both; height:30px;"></div>
+     
+        @foreach (var comment in Model.Comments)
+        {                
+            <div class="containerTitle"><div class="containerTitleText" style="font-size:14px;">Comment by  @Html.Raw(comment.Name)</div><div style="font-size:14px; float:right; padding-right:10px; padding-top:10px;">@Html.Raw(comment.CreateDate.ToString("MMMM dd, yyyy"))</div></div>
+            <div style="clear:both;"></div>
+            <div class="containerStory">
+                    <div class="storyTitle"></div>
+                    <div class="storyText">@Html.Raw(comment.Comment)</div>
+                    <div style="clear:both;"></div>
+            </div>
+            <div style="clear:both; height:10px;"></div>
+        }
+    </div>
+</div>

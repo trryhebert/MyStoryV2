@@ -1,0 +1,23 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="@Url.Content("~/Scripts/app-contact.js")" language="javascript" type="text/javascript"></script>
+<div class="containerBig">
+    <div class="containerInner">
+        <div class="containerTitle"><div class="containerTitleText">Contact Us</div></div>
+        <div style="clear:both;"></div>
+
+        <div class="containerStory">
+            @using (Html.BeginForm("Contact", "Home"))
+            {
+                <br /><br />
+                @Html.TextBox("txtSubject", "Subject", new { id = "txtSubject", style = "width: 500px; color:#999999; font-style:italic;" })
+                <br /><br />
+                @Html.TextArea("txtMessage", new { id = "txtMessage", style = "width: 500px; height:80px; font-family:Arial; font-size:14px; color:#999999; font-style:italic;" })
+                <br /><br />
+                <input type="submit" value="Comment" name="btnSubmit" id="btnSubmit" />
+            }
+        </div>
+    </div>
+</div>

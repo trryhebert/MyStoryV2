@@ -1,0 +1,44 @@
+﻿@model shareyourstory.net.Models.LocalPasswordModel
+
+@{
+    ViewBag.Title = "Manage Account";
+}
+
+<p class="message-success">@ViewBag.StatusMessage</p>
+
+<div class="containerSmall" style="margin-top:0;">
+    <div class="containerInner">
+        <div class="containerTitle">
+            <div class="containerTitleText">Change Password</div>
+        </div>
+        <div style="clear:both;"></div>
+        <div class="containerStorySmall">
+            @if (ViewBag.HasLocalPassword)
+            {
+                @Html.Partial("_ChangePasswordPartial")
+            }
+            else
+            { 
+                @Html.Partial("_SetPasswordPartial")
+            } 
+        </div>
+    </div>
+</div>
+
+<div class="containerSeparater">&nbsp;</div>
+<div class="containerSmall" style="margin-top:0;">
+    <div class="containerInner">
+        <div class="containerTitle">
+            <div class="containerTitleText">External Logins</div>
+        </div>
+        <div style="clear:both;"></div>
+        <div class="containerStorySmall">
+            @Html.Action("RemoveExternalLogins")
+            @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })        
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

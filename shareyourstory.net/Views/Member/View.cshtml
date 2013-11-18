@@ -1,0 +1,18 @@
+﻿@using shareurstorydb;
+@model UserPost
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<p style="padding:5px 0px 5px 0px">
+    @Html.ActionLink("<< Back <<", "index", "Member", null, new { @class = "genericLink" })
+</p>
+
+<h1>@Model.Title</h1>
+
+<div  style="font-size: 10pt">
+    @Html.Raw(Model.Post)
+</div>
+<div style="font-size: 8pt">
+    <strong>created on:</strong> @Model.CreateDate <strong>updated on:</strong> @Model.UpdateDate
+</div>

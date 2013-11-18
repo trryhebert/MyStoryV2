@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Not Found";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>
+    @Html.Encode(ViewData["Title"])
+</h2>
+<div id="error">
+    @Html.Encode(ViewData["Description"])
+</div>
+<p>  
+    Return to the @Html.ActionLink("home page", "Index", "Home")  
+</p> 
