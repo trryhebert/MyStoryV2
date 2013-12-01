@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using shareyourstory.net.Controllers.Helpers;
 using shareurstorydb;
 using PagedList;
-using shareyourstory.net.Models;
 
 namespace shareyourstory.net.Controllers
 {

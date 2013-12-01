@@ -5,9 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using shareyourstory.net.Controllers.Helpers;
 using shareurstorydb;
-using shareyourstory.net.Models;
 
-namespace shareyourstory.net.Controllers
+namespace shareyourstory
 {
     public class BaseController : Controller
     {

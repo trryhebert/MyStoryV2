@@ -7,10 +7,7 @@ using shareurstorydb;
 using shareyourstory.net.Controllers.Helpers;
 using System.Configuration;
 using Facebook;
-//using Facebook.Web;
-//using Facebook.Web.Mvc;
 using System.Web.Services;
-using shareyourstory.net.Models;
 
 namespace shareyourstory.net.Controllers
 {

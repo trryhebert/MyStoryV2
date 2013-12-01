@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Data.Entity;
-using shareyourstory.net.Models;
 using System.Data.Entity.Infrastructure;
 
 namespace shareurstorydb
