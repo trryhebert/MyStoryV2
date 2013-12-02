@@ -9,7 +9,7 @@ using DotNetOpenAuth.AspNet;
 using WebMatrix.WebData;
 using Microsoft.Web.WebPages.OAuth;
 
-namespace shareyourstory
+namespace shareyourstory.net.Controllers
 {
     public class BaseController : Controller
     {
@@ -22,9 +22,9 @@ namespace shareyourstory
             DbContext = new MyStoryContext();
             if (WebSecurity.IsAuthenticated)
             {
-                if (Session != null && Session["User"] != null)
+                if (Session != null && Session["user"] != null)
                 {
-                    User = (UserProfile)Session["User"];
+                    User = (UserProfile)Session["user"];
                 }
                 else
                 {
