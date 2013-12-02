@@ -6,7 +6,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Web.Security;
 
-namespace shareyourstory.net.Models
+namespace shareurstorydb
 {
     //public class UsersContext : DbContext
     //{

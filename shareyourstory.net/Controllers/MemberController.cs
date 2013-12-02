@@ -6,7 +6,7 @@ using System.Web.Mvc;
 using shareyourstory.net.Controllers.Helpers;
 using shareurstorydb;
 using PagedList;
-using shareyourstory.net.Models;
+using DotNetOpenAuth.AspNet;
 
 namespace shareyourstory.net.Controllers
 {
@@ -18,21 +18,21 @@ namespace shareyourstory.net.Controllers
         public MemberController()
             : base()
         {
+
             _loggedIn = true;
         }
 
+        [Authorize]
         public ActionResult Index(int? page)
         {
             try
             {
-                if (!_loggedIn)
-                    return gotoLoginPage("/Member");
+                
                 if (!page.HasValue)
                     page = 1;
                 int pageNumber = (page ?? 1);
-                UserProfile user = (UserProfile)Session["User"];
-                var userPosts = getUserPosts(user.UserId);
-                ViewBag.CurrentUser = user;
+                var userPosts = getUserPosts(User.UserId);
+                ViewBag.CurrentUser = User;
                 ControllerHelpers.DisconnectDB(DbContext);
                 return View(userPosts.ToPagedList(pageNumber, 5));
             }

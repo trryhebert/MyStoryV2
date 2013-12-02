@@ -10,7 +10,6 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using shareyourstory.net.Filters;
 using shareurstorydb;
-using shareyourstory.net.Models;
 
 namespace shareyourstory.net.Controllers
 {
