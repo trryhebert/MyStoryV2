@@ -17,12 +17,12 @@
                 
                 <div class="formItem">
                     <div class="formLabel">@Html.LabelFor(m => m.UserName)</div>
-                    <div class="formInput">@Html.TextBoxFor(m => m.UserName) @Html.ValidationMessageFor(m => m.UserName)</div>
+                    <div class="formInput">@Html.TextBoxFor(m => m.UserName) <span class="formValidation">@Html.ValidationMessageFor(m => m.UserName)</span></div>
                     <div class="clear"></div>
                 </div>        
                 <div class="formItem">
                     <div class="formLabel">@Html.LabelFor(m => m.Password)</div>
-                    <div class="formInput">@Html.PasswordFor(m => m.Password) @Html.ValidationMessageFor(m => m.Password)</div>
+                    <div class="formInput">@Html.PasswordFor(m => m.Password) <span class="formValidation">@Html.ValidationMessageFor(m => m.Password)</span></div>
                     <div class="clear"></div>
                 </div>        
                 <div class="formBottom">

@@ -25,19 +25,26 @@
     <div class="topMenuUnder">
         <div class="topMenu">
             <div class="topMenuBar">
-                <div>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "topMenuItem" })</div>
-                <div>@Html.ActionLink("Read a Story", "Index", "Home/stories", null, new { @class = "topMenuItem" })</div>
-                <div>@Html.ActionLink("Your Stories", "Index", "Member", null, new { @class = "topMenuItem" })</div>
-                <div>@Html.ActionLink("Contact Us", "Contact", "Home", null, new { @class = "topMenuItem" })</div>
-                @using (Html.BeginForm("stories", "Home", FormMethod.Get))
-                {
-                    <div class="searchButton" style="float: right;">
-                        <input type="image" src="@Url.Content("~/content/images/buttonSearch.png")" style="width:28px; height:28px;" onsubmit="submit-form();" />
-                    </div>
-                    <div class="searchInput" style="padding-top: 5px; float: right;" id="txtSearchBy">
-                        @Html.TextBox("SearchText", "", new { id = "SearchText", style = "width:90%" })
-                    </div>
-                }
+                <div class="topMenuBarLeft">
+                    <div>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "topMenuItem" })</div>
+                    <div>@Html.ActionLink("Read a Story", "Index", "Home/stories", null, new { @class = "topMenuItem" })</div>
+                    <div>@Html.ActionLink("Your Stories", "Index", "Member", null, new { @class = "topMenuItem" })</div>
+                    <div>@Html.ActionLink("Contact Us", "Contact", "Home", null, new { @class = "topMenuItem" })</div>
+                    <div class="clear"></div>
+                </div>
+                <div class="topMenuBarRight">
+                    @using (Html.BeginForm("stories", "Home", FormMethod.Get))
+                    {
+                        <div class="searchButtonTop">
+                            <input type="image" src="@Url.Content("~/content/images/buttonSearch.png")" style="width:28px; height:28px;" onsubmit="submit-form();" />
+                        </div>
+                        <div class="searchInputTop" style="padding-top: 5px; float: right;" id="txtSearchBy">
+                            @Html.TextBox("SearchText", "", new { id = "SearchText", style = "width:90%" })
+                        </div>
+                        <div class="clear"></div>
+                    }
+                </div>
+                <div class="clear"></div>
             </div>
         </div>
     </div>

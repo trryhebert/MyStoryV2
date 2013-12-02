@@ -12,9 +12,9 @@
             @using (Html.BeginForm("Contact", "Home"))
             {
                 <br /><br />
-                @Html.TextBox("txtSubject", "Subject", new { id = "txtSubject", style = "width: 500px; color:#999999; font-style:italic;" })
+                @Html.TextBox("txtSubject", "Subject", new { id = "txtSubject", @class="formInput3" })
                 <br /><br />
-                @Html.TextArea("txtMessage", new { id = "txtMessage", style = "width: 500px; height:80px; font-family:Arial; font-size:14px; color:#999999; font-style:italic;" })
+                @Html.TextArea("txtMessage", new { id = "txtMessage", @class="formInput4" })
                 <br /><br />
                 <input type="submit" value="Comment" name="btnSubmit" id="btnSubmit" />
             }

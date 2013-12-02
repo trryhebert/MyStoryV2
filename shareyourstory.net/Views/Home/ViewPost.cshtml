@@ -16,7 +16,8 @@
 <script type="text/javascript">
     FB.Event.subscribe('edge.create', function (href, widget) {
         $.ajax({
-            url: 'http://shareyourstory.dyndns-web.com:50418/Home/FBLike',
+            //url: 'http://shareyourstory.dyndns-web.com:50418/Home/FBLike',
+            url: 'http://localhost:51132//Home/FBLike',
             data: { id: @Model.Stories[0].ID },
             success: function (response) {
                 //alert(response);
@@ -33,7 +34,8 @@
     FB.Event.subscribe('edge.remove', 
       function(response) { 
           $.ajax({
-              url: 'http://shareyourstory.dyndns-web.com:50418/Home/FBUnlike',
+              //url: 'http://shareyourstory.dyndns-web.com:50418/Home/FBUnlike',
+              url: 'http://localhost:51132//Home/FBUnlike',
               data: { id: @Model.Stories[0].ID },
             success: function (response) {
                 //alert(response);
@@ -49,7 +51,8 @@
 
     function fbs_click() {
         $.ajax({
-            url: 'http://shareyourstory.dyndns-web.com:50418/Home/FBShare',
+            //url: 'http://shareyourstory.dyndns-web.com:50418/Home/FBShare',
+            url: 'http://localhost:51132//Home/FBShare',
             data: { id: @Model.Stories[0].ID },
             success: function (response) {
                 //alert(response);
@@ -66,7 +69,7 @@
 <div class="containerBig">
     <div class="containerInner">
         <div class="containerTitle">
-            <div class="containerTitleText">@Html.Raw(Model.Stories[0].Title) </div><div style="font-size:14px; float:right; padding-right:10px; padding-top:10px;">by @Html.Raw(Model.Stories[0].Name.ToString())</div>
+            <div class="containerTitleText">@Html.Raw(Model.Stories[0].Title) </div><div class="containerTitleSubText">by @Html.Raw(Model.Stories[0].Name.ToString())</div>
         </div>
         <div style="clear:both;"></div>
         <div class="containerStory">
@@ -154,7 +157,7 @@
      
         @foreach (var comment in Model.Comments)
         {                
-            <div class="containerTitle"><div class="containerTitleText" style="font-size:14px;">Comment by  @Html.Raw(comment.Name)</div><div style="font-size:14px; float:right; padding-right:10px; padding-top:10px;">@Html.Raw(comment.CreateDate.ToString("MMMM dd, yyyy"))</div></div>
+            <div class="containerTitle"><div class="containerTitleText" style="font-size:14px;">Comment by  @Html.Raw(comment.Name)</div><div class="containerTitleSubText">@Html.Raw(comment.CreateDate.ToString("MMMM dd, yyyy"))</div></div>
             <div style="clear:both;"></div>
             <div class="containerStory">
                     <div class="storyTitle"></div>

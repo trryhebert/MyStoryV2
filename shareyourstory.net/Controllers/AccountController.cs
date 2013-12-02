@@ -38,15 +38,28 @@ namespace shareyourstory.net.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
-                MyStoryContext _context = new MyStoryContext();
-                UserProfile user = _context.UserProfiles.Single(u => u.UserName == model.UserName);
-                Session.Add("user", user);
+                SaveUserSession(model.UserName);
                 return RedirectToLocal(returnUrl);
             }
 
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "The user name or password provided is incorrect.");
             return View(model);
+        }
+
+        public void SaveUserSession(string username)
+        {
+            MyStoryContext _context = new MyStoryContext();
+            UserProfile user = _context.UserProfiles.Single(u => u.UserName == username);
+            Session.Add("user", user);
+        }
+
+        public void SaveUserSessionExternal(string providerid)
+        {
+            MyStoryContext _context = new MyStoryContext();
+            OAuthMembership membership = _context.OAuthMemberships.Single(m => m.ProviderUserId == providerid);
+            UserProfile user = _context.UserProfiles.Single(u => u.UserId == membership.UserId);
+            Session.Add("user", user);
         }
 
         //
@@ -86,6 +99,7 @@ namespace shareyourstory.net.Controllers
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
+                    SaveUserSession(model.UserName);
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
@@ -235,6 +249,7 @@ namespace shareyourstory.net.Controllers
 
             if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: false))
             {
+                SaveUserSessionExternal(result.ProviderUserId);
                 return RedirectToLocal(returnUrl);
             }
 
@@ -314,6 +329,7 @@ namespace shareyourstory.net.Controllers
 
                         OAuthWebSecurity.CreateOrUpdateAccount(provider, providerUserId, model.UserName);
                         OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
+                        SaveUserSession(model.UserName);
 
                         return RedirectToLocal(returnUrl);
                     }

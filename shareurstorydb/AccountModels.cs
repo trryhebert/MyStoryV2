@@ -111,4 +111,17 @@ namespace shareyourstory.net.Models
         public string Link { get; set; }
         public bool? Verified { get; set; }
     }
+
+    [Table("webpages_OAuthMembership")]
+    public class OAuthMembership
+    {
+        [Key, Column(Order = 0), StringLength(30)]
+        public string Provider { get; set; }
+
+        [Key, Column(Order = 1), StringLength(100)]
+        public string ProviderUserId { get; set; }
+
+        public int UserId { get; set; }
+    }
+
 }

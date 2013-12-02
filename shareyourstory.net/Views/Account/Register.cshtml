@@ -5,7 +5,7 @@
 
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary()
+    <span class="formValidation">@Html.ValidationSummary()</span>
     
     <div class="containerBig" style="margin-top:0;">
         <div class="containerInner">
@@ -16,17 +16,17 @@
             <div class="containerStory">
                 <div class="formItem">
                     <div class="formLabel">@Html.LabelFor(m => m.UserName)</div>
-                    <div class="formInput2">@Html.TextBoxFor(m => m.UserName)</div>
+                    <div class="formInput">@Html.TextBoxFor(m => m.UserName)</div>
                     <div class="clear"></div>
                 </div>        
                 <div class="formItem">
                     <div class="formLabel">@Html.LabelFor(m => m.Password)</div>
-                    <div class="formInput2">@Html.PasswordFor(m => m.Password)</div>
+                    <div class="formInput">@Html.PasswordFor(m => m.Password)</div>
                     <div class="clear"></div>
                 </div>        
                 <div class="formItem">
                     <div class="formLabel">@Html.LabelFor(m => m.ConfirmPassword)</div>
-                    <div class="formInput2">@Html.PasswordFor(m => m.ConfirmPassword)</div>
+                    <div class="formInput">@Html.PasswordFor(m => m.ConfirmPassword)</div>
                     <div class="clear"></div>
                 </div>        
                 <div class="formBottom">

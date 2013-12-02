@@ -53,7 +53,7 @@ Caching... want to create a service that would run every 10 minutes and refresh 
                         <div class="searchText">Search Stories:</div>
                     
                         <!--<div class="searchInput">@Html.DropDownListFor(x => x.SearchOptions, new SelectList(Model.SearchOptions, "Value", "Text"), new { id = "ddlSearchBy" })</div>-->
-                        <div class="searchInput" id="txtSearchBy">@Html.TextBoxFor(model => model.SearchText, new { id = "SearchText", style = "width:90%", @class = "SearchText" })</div>
+                        <div class="searchInput" id="txtSearchBy">@Html.TextBoxFor(model => model.SearchText, new { id = "SearchText", @class = "SearchText" })</div>
                         <!--<div class="searchInput" id="ddlSearchByCategories" style="display:none;">@Html.DropDownListFor(x => x.SearchCategories, new SelectList(Model.SearchCategories, "Value", "Text"), new { id = "ddlSearchByCategories" })</div>-->
                         <div class="searchButton"><input type="submit" value="Search" class="cSearchButton" /></div>
                     </div>
@@ -75,21 +75,22 @@ Caching... want to create a service that would run every 10 minutes and refresh 
     <!-- START: Sorting + Paging -->
     <div class="sort">
         <div class="sortInner">
-            <div style="float:left">
+            <div class="pagingLeft">
                 Sort By:
                 @Html.DropDownListFor(model => model.SortOption, new SelectList(Model.SortOptions, "Value", "Text", Model.SortOption), new { onchange = "submit();" })
         
-                &nbsp;&nbsp;Page:&nbsp;
             </div>
+            <div class="pagingRight">
                 @foreach (string page in Model.PageNoList)
                 {
                     if (page == Model.currentPage)
                     {
                         <div style="float:left; padding-top:2px;">
+                            &nbsp;&nbsp;Page:&nbsp;
                             @page <span>of</span> @Model.PageNoList.Count()
                             <span>&nbsp;</span>
                         </div>
-                
+                                            
                         <div style="float:left">
                             <!--Show the back arrow to go to previous page-->
                             @if (Convert.ToInt32(page) != 1)
@@ -114,9 +115,10 @@ Caching... want to create a service that would run every 10 minutes and refresh 
                             {
                                 <div class="pageRightD"></div>
                             }
-                        </div>
+                        </div> 
                     }
-                } 
+                }                        
+            </div>
         </div>
     </div>
     <!-- END: Sorting + Paging -->
@@ -127,18 +129,18 @@ Caching... want to create a service that would run every 10 minutes and refresh 
         <div class="containerInner">
             @foreach (var item in Model.Stories)
             {
-                <div class="containerTitle"><div class="containerTitleText">@Html.Raw(item.Title)</div><div style="font-size:14px; float:right; padding-right:10px; padding-top:10px;">by @Html.Raw(item.Name.ToString())</div></div>
+                <div class="containerTitle"><div class="containerTitleText">@Html.Raw(item.Title)</div><div class="containerTitleSubText isDesktop">by @Html.Raw(item.Name.ToString())</div></div>
                 <div style="clear:both;"></div>
                 <div class="containerStory">
                         <div class="storyTitle"></div>
                         <div class="storyText">@Html.Raw(item.Post.Length <= 260 ? item.Post : String.Concat(item.Post.Substring(0, 260), " ... "))</div>
 
-                        <div style="float:left;">
+                        <div class="containerBottomLeft">
                             (<span style="color:blue">@Html.ActionLink("Read More", "ViewPost", new { id = item.ID })</span>)
                         </div>                    
-                        <div style="float:right;">
-                            <b>Created Date:</b> @Html.Raw(item.CreateDate.ToString("MMMM dd, yyyy")) &nbsp;|&nbsp;
-                            <b>Likes:</b> @Html.Raw(item.Likes.ToString())
+                        <div class="isMobile">by @Html.Raw(item.Name.ToString())</div>
+                        <div class="containerBottomRight">
+                            <b>Created Date:</b> @Html.Raw(item.CreateDate.ToString("MMMM dd, yyyy"))<span class="isDesktop">&nbsp;|&nbsp;</span><span class="isMobile"><br /></span><b>Likes:</b> @Html.Raw(item.Likes.ToString())
                         </div>
                         <div style="clear:both;"></div>
                 </div>

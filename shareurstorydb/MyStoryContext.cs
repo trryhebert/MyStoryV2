@@ -28,6 +28,7 @@ namespace shareurstorydb
 
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<ExternalUserInformation> ExternalUsers { get; set; }
+        public DbSet<OAuthMembership> OAuthMemberships { get; set; }
     }
 
     public class CreateDb : DropCreateDatabaseIfModelChanges<MyStoryContext>
