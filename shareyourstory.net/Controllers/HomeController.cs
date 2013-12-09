@@ -20,12 +20,12 @@ namespace shareyourstory.net.Controllers
         //
         // GET: /Index/
 
-        //public HomeController()
-        //    : base()
+        //public HomeController(): base()
         //{
         //}
         public ActionResult Index()
         {
+            
             try
             {
                 var latestPosts = Helpers.ControllerHelpers.GetLatestTopXUserPosts(3, DbContext);

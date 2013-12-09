@@ -20,6 +20,10 @@ namespace shareyourstory.net.Controllers
         {
             ControllerHelpers.SetDbInitializer();
             DbContext = new MyStoryContext();
+        }
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+
             if (WebSecurity.IsAuthenticated)
             {
                 if (Session != null && Session["user"] != null)
@@ -32,15 +36,11 @@ namespace shareyourstory.net.Controllers
                     {
                         User = db.UserProfiles.FirstOrDefault(u => u.UserName.ToLower() == WebSecurity.CurrentUserName.ToLower());
                     }
-                    //Session.Add("User", User);
+                    Session["user"] = User;
                 }
             }
-        }
-        protected override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-
-            if (Session["User"] != null)
-                User = (UserProfile)Session["User"];
+            //if (Session["User"] != null)
+            //    User = (UserProfile)Session["User"];
             base.OnActionExecuting(filterContext);
 
             //this.OpenContext();
