@@ -69,7 +69,15 @@ namespace shareyourstory.net.Controllers
         public ActionResult LogOff()
         {
             WebSecurity.Logout();
-            Session.Remove("facebooktoken");
+
+            if (Session["facebooktoken"] != null)
+            {
+                var fb = new Facebook.FacebookClient();
+                var logoutUrl = fb.GetLogoutUrl(new { access_token = Session["facebooktoken"], next = Request.Url.AbsoluteUri.ToString().ToLower().Replace("account/logoff", "") });
+
+                Response.Redirect(logoutUrl.AbsoluteUri);
+                Session.RemoveAll();
+            }
 
             return RedirectToAction("Index", "Home");
         }
