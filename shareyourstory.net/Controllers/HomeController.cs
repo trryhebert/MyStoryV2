@@ -14,15 +14,19 @@ namespace shareyourstory.net.Controllers
     public class HomeController : BaseController
     {
         //Initialize Paging
-        int PageCount = 1;
+        int PageCount = 10;
         int PageNumber = 1;
         string failMessage = "";
         //
         // GET: /Index/
 
-        //public HomeController(): base()
-        //{
-        //}
+        public HomeController()
+            : base()
+        {
+            if (System.Configuration.ConfigurationManager.AppSettings["PageSize"] != null)
+                if (int.TryParse(System.Configuration.ConfigurationManager.AppSettings["PageSize"], out PageCount) == false)
+                    PageNumber = 10;
+        }
         public ActionResult Index()
         {
             
@@ -258,47 +262,14 @@ namespace shareyourstory.net.Controllers
         {
             string sortOption = Request.QueryString["SortOption"];
             string searchText = Request.QueryString["SearchText"];
-
             StoriesListModel stories = new StoriesListModel();
-            stories.SortOption = sortOption;
-            stories.SearchText = searchText;
-
             try
             {
-                //Get minutes difference between now and last update
-                TimeSpan span = new TimeSpan();
-                if (HttpContext.Cache["LastUpdate"] != null)
-                {
-                    DateTime startTime = Convert.ToDateTime(HttpContext.Cache["LastUpdate"]);
-                    DateTime endTime = DateTime.Now;
-                    span = endTime.Subtract(startTime);
-                }
-
-                //If cache is empty or cache is older than 2 hours, then remove cache and populate new coupons
-                if (this.HttpContext.Cache["Stories"] == null || this.HttpContext.Cache["LastUpdate"] == null || span.Minutes > Convert.ToInt32(ConfigurationManager.AppSettings["CacheMinutes"]) || ((List<StoriesDTO>)this.HttpContext.Cache["Stories"]).Count == 0)
-                {
-                    this.HttpContext.Cache.Remove("LastUpdate");
-                    this.HttpContext.Cache.Insert("LastUpdate", DateTime.Now);
-
-                    this.HttpContext.Cache.Remove("Stories");
-
-                    //Get All Stories
-                    List<StoriesDTO> storiesDTO = Helpers.ControllerHelpers.GetStories(DbContext);
-                    stories.Stories = storiesDTO;
-
-                    //Need to create a list that will not be modified
-                    StoriesListModel storiesCache = new StoriesListModel();
-                    storiesCache.Stories = new List<StoriesDTO>();
-                    storiesCache.Stories = stories.Stories.ToList();
-
-                    this.HttpContext.Cache.Insert("Stories", storiesCache.Stories);
-                }
-                else
-                    stories.Stories = (List<StoriesDTO>)this.HttpContext.Cache["Stories"];
-
+                // Initialize the cache and retrieve stories.
+                stories = doMemoryAndGetStories(sortOption, searchText);
                 stories.PageNoList = new List<string>();
+                //Initialize the stories properties
                 PopulateDDL(stories);
-
                 //Do Searching
                 Searching(stories, searchText);//collection);
                 //Do Sorting
@@ -315,6 +286,46 @@ namespace shareyourstory.net.Controllers
                 ControllerContext.RequestContext.HttpContext.Trace.Write(ex.ToString());
                 return View(stories);
             }
+        }
+
+        private StoriesListModel doMemoryAndGetStories(string sortOption, string searchText)
+        {
+            StoriesListModel stories = new StoriesListModel();
+            stories.SortOption = sortOption;
+            stories.SearchText = searchText;
+
+            //Get minutes difference between now and last update
+            TimeSpan span = new TimeSpan();
+            if (HttpContext.Cache["LastUpdate"] != null)
+            {
+                DateTime startTime = Convert.ToDateTime(HttpContext.Cache["LastUpdate"]);
+                DateTime endTime = DateTime.Now;
+                span = endTime.Subtract(startTime);
+            }
+
+            //If cache is empty or cache is older than 2 hours, then remove cache and populate new stories
+            if (this.HttpContext.Cache["Stories"] == null || this.HttpContext.Cache["LastUpdate"] == null || span.Minutes > Convert.ToInt32(ConfigurationManager.AppSettings["CacheMinutes"]) || ((List<StoriesDTO>)this.HttpContext.Cache["Stories"]).Count == 0)
+            {
+                this.HttpContext.Cache.Remove("LastUpdate");
+                this.HttpContext.Cache.Insert("LastUpdate", DateTime.Now);
+
+                this.HttpContext.Cache.Remove("Stories");
+
+                //Get All Stories
+                List<StoriesDTO> storiesDTO = Helpers.ControllerHelpers.GetStories(DbContext);
+                stories.Stories = storiesDTO;
+
+                //Need to create a list that will not be modified
+                StoriesListModel storiesCache = new StoriesListModel();
+                storiesCache.Stories = new List<StoriesDTO>();
+                storiesCache.Stories = stories.Stories.ToList();
+
+                this.HttpContext.Cache.Insert("Stories", storiesCache.Stories);
+            }
+            else
+                stories.Stories = (List<StoriesDTO>)this.HttpContext.Cache["Stories"];
+
+            return stories;
         }
 
         private StoriesListModel PopulateDDL(StoriesListModel stories)

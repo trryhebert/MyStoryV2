@@ -166,9 +166,6 @@ Caching... want to create a service that would run every 10 minutes and refresh 
             }
             <span>&nbsp;</span>
         } 
-        <!-- ActionLink causes a get instead of a post and this is why the collection is not setup when in the controller. Need to setup the ActionLink or an href to do a post.-->
-        <a href="javascript:window.location.href=GetHref(0);">View All</a>
-        <!--@Html.ActionLink("View All", "stories", new { PageNumber = 0 })-->
     </div>
     <div style="clear:both; height:10px;"></div>
     <!-- END: PAGING BOTTOM -->
