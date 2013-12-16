@@ -54,9 +54,9 @@ h1 { font-size: 18pt; line-height: 20pt; margin-bottom: 10px;}
 .containerBottomLeft {float:left;}
 .containerBottomRight {float:right;}
 
-.imgStar {width:32px; height:31px; background-image:url('images/starGreen.jpg'); background-repeat:no-repeat; float:left; margin-top:2px;}
-.imgThumb {width:32px; height:31px; background-image:url('images/thumbGreen.jpg'); background-repeat:no-repeat; float:left; margin-top:2px;}
-.imgBooks {width:57px; height:31px; background-image:url('images/booksGreen.jpg'); background-repeat:no-repeat; float:left; margin-top:2px;}
+.imgStar {width:32px; height:25px; background-image:url('images/starGreen.jpg'); background-repeat:no-repeat; float:left; margin-top:2px; background-size: Auto 25px; margin-left:5px;}
+.imgThumb {width:32px; height:25px; background-image:url('images/thumbGreen.jpg'); background-repeat:no-repeat; float:left; margin-top:2px; background-size: Auto 25px; margin-left:5px;}
+.imgBooks {width:57px; height:25px; background-image:url('images/booksGreen.jpg'); background-repeat:no-repeat; float:left; margin-top:2px; background-size: Auto 25px; margin-left:5px;}
 
 .search {padding-top:5px;}
 .searchText {float:left; width:13%; padding-top:2px;}
@@ -119,9 +119,9 @@ h1 { font-size: 18pt; line-height: 20pt; margin-bottom: 10px;}
 @media screen and (max-width: 720px) {
     .containerBig {width:100%;}
     .containerSmall {float:none; width:100%;}
-    .containerTitle {font-size:14px;}
-    .containerTitleText {float:none; width:80%; max-height:30px; overflow:hidden;}
-    .containerTitleSubText {font-size:10px;}
+    .containerTitle {font-size:14px; height:auto;}
+    .containerTitleText {float:none; width:100%; overflow:hidden; line-height:30px;}
+    .containerTitleSubText {font-size:12px; font-weight:normal; float:none; width:100%; padding-left:10px; padding-bottom:5px; margin-top:-15px;}
     .mainLeft {float:none; width:100%;}
     .mainRight {float:none; width:100%; text-align:center; margin-top:4%;}
     .topBarLogo {padding-bottom:5%;}
@@ -137,9 +137,9 @@ h1 { font-size: 18pt; line-height: 20pt; margin-bottom: 10px;}
     .searchText {width:20%;}
     .searchInput {width:58%;}
     
-    .sortInner {float:none; width:100%; margin:0 auto; text-align:center;}
-    .pagingLeft {float:none;}
-    .pagingRight {float:none; width:100px; margin:0 auto; padding-top:0.5em;}
+    .sortInner {float:none;}
+    .pagingLeft {float:none; padding-left:15px;}
+    .pagingRight {float:none; padding-left:10px; padding-top:0.5em;}
     
     .isDesktop {display:none;}
     .isMobile {display:inline;}

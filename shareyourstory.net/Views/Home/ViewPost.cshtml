@@ -69,7 +69,7 @@
 <div class="containerBig">
     <div class="containerInner">
         <div class="containerTitle">
-            <div class="containerTitleText">@Html.Raw(Model.Stories[0].Title) </div><div class="containerTitleSubText">by @Html.Raw(Model.Stories[0].Name.ToString())</div>
+            <div class="containerTitleText">@Html.Raw(Model.Stories[0].Title) </div><div class="containerTitleSubText isDesktop">by @Html.Raw(Model.Stories[0].Name.ToString())</div><div class="clear"></div>
         </div>
         <div style="clear:both;"></div>
         <div class="containerStory">
@@ -88,8 +88,13 @@
                         class="fb_share_button" onclick="return fbs_click()" target="_blank" style="text-decoration:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Share</a> 
                 </div>
             </div>
-            <div style="float:right;">
-                <b>Created Date:</b> @Html.Raw(Model.Stories[0].CreateDate.ToString("MMMM dd, yyyy")) &nbsp;|&nbsp;
+            <div class="isDesktop" style="float:right;">
+                <b>Posted:</b> @Html.Raw(Model.Stories[0].CreateDate.ToString("MMMM dd, yyyy")) &nbsp;|&nbsp;
+                <b>Likes:</b> @Html.Raw(Model.Stories[0].Likes.ToString())
+            </div>
+            <div class="isMobile"><br /><br />
+                by @Html.Raw(Model.Stories[0].Name.ToString())<br />
+                <b>Posted:</b> @Html.Raw(Model.Stories[0].CreateDate.ToString("MMMM dd, yyyy")) &nbsp;|&nbsp;
                 <b>Likes:</b> @Html.Raw(Model.Stories[0].Likes.ToString())
             </div>
             <div style="clear:both; height:10px;"></div>
