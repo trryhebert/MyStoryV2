@@ -23,8 +23,9 @@ namespace shareyourstory.net.Controllers
         public HomeController()
             : base()
         {
-            if (System.Configuration.ConfigurationManager.AppSettings["PageSize"] != null)
-                if (int.TryParse(System.Configuration.ConfigurationManager.AppSettings["PageSize"], out PageCount) == false)
+            //Set the page size
+            if (System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"] != null)
+                if (int.TryParse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"], out PageCount) == false)
                     PageNumber = 10;
         }
         public ActionResult Index()
