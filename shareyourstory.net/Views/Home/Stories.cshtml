@@ -129,7 +129,10 @@ Caching... want to create a service that would run every 10 minutes and refresh 
         <div class="containerInner">
             @foreach (var item in Model.Stories)
             {
-                <div class="containerTitle"><div class="containerTitleText">@Html.Raw(item.Title)</div><div class="containerTitleSubText isDesktop">by @Html.Raw(item.Name.ToString())</div></div>
+                <div class="containerTitle">
+                    <div class="containerTitleText">@Html.Raw(item.Title)</div>
+                    <div class="containerTitleSubText isDesktop">by @Html.ActionLink(item.Name.ToString(), "Stories", new { u = item.UserId.ToString() })</div>
+                </div>
                 <div style="clear:both;"></div>
                 <div class="containerStory">
                         <div class="storyTitle"></div>
