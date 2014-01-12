@@ -69,7 +69,7 @@
 <div class="containerBig">
     <div class="containerInner">
         <div class="containerTitle">
-            <div class="containerTitleText">@Html.Raw(Model.Stories[0].Title) </div><div class="containerTitleSubText">by @Html.Raw(Model.Stories[0].Name.ToString())</div>
+            <div class="containerTitleText">@Html.Raw(Model.Stories[0].Title) </div><div class="containerTitleSubText">by @Html.ActionLink(Model.Stories[0].Name.ToString(), "Stories", new { u = Model.Stories[0].UserId }) </div>
         </div>
         <div style="clear:both;"></div>
         <div class="containerStory">
