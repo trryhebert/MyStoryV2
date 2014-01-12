@@ -28,12 +28,14 @@ namespace shareyourstory.net
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+            routes.MapRoute("stories", "stories", new { controller = "Home", action = "Stories", id = "" });
+            routes.MapRoute("view", "stories/{id}", new { controller = "Home", action = "ViewPost", id = "" });
             routes.MapRoute(
                 "Default",                                              // Route name
                 "{controller}/{action}/{id}",                           // URL with parameters
                 new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
             );
-            routes.MapRoute("stories", "Stories/{action}/{id}", new { controller = "Home", action = "Stories", id = "" });
+            //routes.MapRoute("stories", "Stories/{action}/{id}", new { controller = "Home", action = "Stories", id = "" });
 
         }
     }
