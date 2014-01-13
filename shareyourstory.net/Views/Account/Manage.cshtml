@@ -4,10 +4,22 @@
     ViewBag.Title = "Manage Account";
 }
 
+@if (ViewBag.IsActive == false)
+{ 
+    <script>alert('Your account is inactive.');</script>
+}
+
 <p class="message-success">@ViewBag.StatusMessage</p>
 
 <div class="containerSmall" style="margin-top:0;">
     <div class="containerInner">
+        <div class="containerTitle">
+            <div class="containerTitleText">My Account</div>
+        </div>
+        <div style="clear:both;"></div>
+        <div class="containerStorySmall">
+            @Html.Partial("_UserProfilePartial")
+        </div>
         <div class="containerTitle">
             <div class="containerTitleText">Change Password</div>
         </div>

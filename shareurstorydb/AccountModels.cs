@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Globalization;
 using System.Web.Security;
+using System.ComponentModel;
 
 namespace shareurstorydb
 {
@@ -26,6 +27,7 @@ namespace shareurstorydb
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public bool isActive { get; set; }
     }
 
     public class RegisterExternalLoginModel
@@ -93,6 +95,13 @@ namespace shareurstorydb
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        public bool isActive { get; set; }
+
+        public RegisterModel()
+        {
+            isActive = true; //Set default value
+        }
     }
 
     public class ExternalLogin

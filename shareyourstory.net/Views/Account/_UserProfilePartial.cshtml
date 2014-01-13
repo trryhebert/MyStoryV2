@@ -1,0 +1,49 @@
+﻿@if (ViewBag.IsActive == true)
+{ 
+    <input type="button" value="Deactivate Account" onclick="deactivate();" />
+    <div style="font-style:italic;">* If you deactivate your account, your stories will no longer show publically.</div>
+}
+else
+{
+    <input type="button" value="Activate Account" onclick="activate();" />
+    <div style="font-style:italic;">* If you activate your account, your existant stories will be show publically again.</div>    
+}
+
+<br /><br >
+
+<script>
+    function activate()
+    {
+        $.ajax({
+            url: 'http://localhost:51132/Account/UpdateIsActiveAJAX',
+            data: { isActive: true },
+            cache: false,
+            success: function (response) {
+                if (response != "Success")
+                    alert('Failure activating account. Please try again.');
+                else
+                    window.location("Manage");
+            },
+            error: function (e) {
+                alert(e.responseText);
+            }
+        });
+    }
+
+    function deactivate() {
+        $.ajax({
+            url: 'http://localhost:51132/Account/UpdateIsActiveAJAX',
+            data: { isActive: false },
+            cache: false,
+            success: function (response) {
+                if (response != "Success")
+                    alert('Failure deactivating account. Please try again.');
+                else
+                    window.location("Manage");
+            },
+            error: function (e) {
+                alert(e.responseText);
+            }
+        });
+    }
+</script>

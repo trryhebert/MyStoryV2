@@ -442,6 +442,9 @@ namespace shareyourstory.net.Controllers
             {
                 UserProfile user = (UserProfile)Session["User"];
 
+                if (user.isActive == false)
+                    return RedirectToAction("Manage", "Account");
+
                 //string comment = "test test test 123..."; // Request.QueryString["txtComment"];
                 string comment = SanitizeHtml.Sanitize(post["txtComment"]);
                 Int32 PostID = story.Stories[0].ID;
@@ -464,7 +467,8 @@ namespace shareyourstory.net.Controllers
             catch (Exception ex)
             {
                 ControllerHelpers.LogError(DbContext, ex, out failMessage);
-                ViewData["ErrorMsg"] = failMessage;
+                //ViewData["ErrorMsg"] = failMessage;
+                return RedirectToAction("Login", "Account");
             }
             return View(story);
         }

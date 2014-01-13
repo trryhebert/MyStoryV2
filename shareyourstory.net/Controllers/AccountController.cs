@@ -11,6 +11,7 @@ using WebMatrix.WebData;
 using shareyourstory.net.Filters;
 using shareurstorydb;
 using Microsoft.Web.Helpers;
+using System.Web.Services;
 
 namespace shareyourstory.net.Controllers
 {
@@ -108,6 +109,9 @@ namespace shareyourstory.net.Controllers
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
                     SaveUserSession(model.UserName);
+
+                    UpdateIsActive(true);
+
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
@@ -161,6 +165,8 @@ namespace shareyourstory.net.Controllers
                 : "";
             ViewBag.HasLocalPassword = OAuthWebSecurity.HasLocalAccount(WebSecurity.GetUserId(User.Identity.Name));
             ViewBag.ReturnUrl = Url.Action("Manage");
+            UserProfile user = (UserProfile)Session["user"];
+            ViewBag.IsActive = user.isActive;
             return View();
         }
 
@@ -339,6 +345,8 @@ namespace shareyourstory.net.Controllers
                         OAuthWebSecurity.Login(provider, providerUserId, createPersistentCookie: false);
                         SaveUserSession(model.UserName);
 
+                        UpdateIsActive(true);
+
                         return RedirectToLocal(returnUrl);
                     }
                     else
@@ -464,6 +472,55 @@ namespace shareyourstory.net.Controllers
                 default:
                     return "An unknown error occurred. Please verify your entry and try again. If the problem persists, please contact your system administrator.";
             }
+        }
+
+        //
+        // GET: /Account/UserProfile
+        public ActionResult UserProfile()
+        {
+            UserProfile model = (UserProfile)Session["user"];
+
+            return View(model);
+        }
+
+        //
+        // POST: /Account/UserProfile
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Activate(bool isActive)
+        {
+            return View();
+        }
+
+        public void UpdateIsActive(bool isActive)
+        {
+            UserProfile user = (UserProfile)Session["user"];
+
+            MyStoryContext DbContext = new MyStoryContext();
+            var qry = (from p in DbContext.UserProfiles
+                       where p.UserId == user.UserId
+                       select p).FirstOrDefault();
+
+            qry.isActive = isActive;
+            DbContext.SaveChanges();
+
+            //Update session value
+            user.isActive = isActive;
+            Session["user"] = user;
+        }
+
+        [WebMethod]
+        public string UpdateIsActiveAJAX(bool isActive)
+        {
+            try
+            {
+                UpdateIsActive(isActive);
+                return "Success";
+            }
+            catch (Exception ex)
+            {
+            }
+            return "Fail";
         }
         #endregion
     }

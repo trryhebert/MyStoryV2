@@ -32,13 +32,16 @@ namespace shareyourstory.net.Controllers.Helpers
         public static IQueryable<UserPost> GetLatestTopXUserPosts(int topNum, MyStoryContext context)
         {
             return (from p in context.UserPosts
+                    join o in context.UserProfiles on p.UserId equals o.UserId
+                    where o.isActive == true
                     select p).Take<UserPost>(topNum);
         }
         public static IQueryable<TopPostReadings> GetPopularTopXUserPosts(int topNum, MyStoryContext context)
         {
             var topreadings = (from p in context.UserPosts
                                from r in context.PostReadings
-                               where r.PostID == p.ID
+                               join o in context.UserProfiles on p.UserId equals o.UserId
+                               where r.PostID == p.ID && o.isActive == true
                                group r.IP by p into pr
                                select new TopPostReadings { post = pr.Key, numberReadings = pr.Distinct().Count() }
                    ).OrderByDescending(x => x.numberReadings).Take(topNum);
@@ -50,7 +53,8 @@ namespace shareyourstory.net.Controllers.Helpers
             //http://stackoverflow.com/questions/1387110/linq-to-sql-get-top-10-most-ordered-products
             var topposts = (from p in context.UserPosts
                             from l in context.PostLikes
-                            where l.PostID == p.ID
+                            join o in context.UserProfiles on p.UserId equals o.UserId
+                            where l.PostID == p.ID && o.isActive == true
                             group l by p into pl
                             select new TopPostLikes { post = pl.Key, numberLikes = pl.Count() }
                    ).OrderByDescending(x => x.numberLikes).Take(topNum);
@@ -63,6 +67,7 @@ namespace shareyourstory.net.Controllers.Helpers
             return (from p in context.UserPosts
                     //where usrs.LastActivityDate <= duration 
                     join o in context.UserProfiles on p.UserId equals o.UserId
+                    where o.isActive == true
                     select new StoriesDTO()
                     {
                         ID = p.ID,
@@ -81,7 +86,7 @@ namespace shareyourstory.net.Controllers.Helpers
             return (from p in context.UserPosts
                     //where usrs.LastActivityDate <= duration 
                     join o in context.UserProfiles on p.UserId equals o.UserId
-                    where p.ID == id
+                    where p.ID == id && o.isActive == true
                     select new StoriesDTO()
                     {
                         ID = p.ID,
@@ -107,6 +112,7 @@ namespace shareyourstory.net.Controllers.Helpers
             return (from p in context.PostComments
                     where p.PostID == id
                     join o in context.UserProfiles on p.UserID equals o.UserId
+                    where o.isActive == true
                     select new CommentsDTO()
                     {
                         ID = p.ID,

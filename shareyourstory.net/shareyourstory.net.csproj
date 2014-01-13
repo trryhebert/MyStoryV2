@@ -305,6 +305,7 @@
     <Content Include="Views\Shared\_LayoutMin.cshtml" />
     <Content Include="Views\Shared\_Ads.cshtml" />
     <Content Include="Views\Shared\_ErrorLabel.cshtml" />
+    <Content Include="Views\Account\_UserProfilePartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
