@@ -14,7 +14,7 @@
 <script type="text/javascript">
     FB.Event.subscribe('edge.create', function (href, widget) {
         $.ajax({
-            url: '@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook_2"].ToString() + "/Home/FBLike")',
+            url: '@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook"].ToString() + "/Home/FBLike")',
             data: { id: @Model.Stories[0].ID },
             success: function (response) {
                 var test = 'test';
@@ -29,7 +29,7 @@
     FB.Event.subscribe('edge.remove',
       function(response) {
           $.ajax({
-              url: '@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook_2"].ToString() + "/Home/FBUnlike")',
+              url: '@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook"].ToString() + "/Home/FBUnlike")',
               data: { id: @Model.Stories[0].ID },
               success: function (response) {
                   var test = 'test';
@@ -43,7 +43,7 @@
 
     function fbs_click() {
         $.ajax({
-            url: '@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook_2"].ToString() + "/Home/FBShare")',
+            url: '@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook"].ToString() + "/Home/FBShare")',
             data: { id: @Model.Stories[0].ID },
             success: function (response) {
                 var test = 'test';
@@ -64,11 +64,11 @@
         <div class="containerStory">
             <div style="float:left;">
                 <div style="float:left; width:90px; overflow:hidden;">
-                    <fb:like href='@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook_1"].ToString() + "/Home/@Model.Stories[0].ID")' send="false" layout="button_count" show_faces="false" font="lucida grande" />
+                    <fb:like href='@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook"].ToString() + "/Home/@Model.Stories[0].ID")' send="false" layout="button_count" show_faces="false" font="lucida grande" />
                 </div>
                 <div style="float:left;">
                     <style> html .fb_share_button { display: -moz-block; display:block; color:#3B5998; line-height:18px; width:60px; height:21px; background:url('/Content/images/fbshare_bg.jpg') no-repeat top right; background-size: 60px 20px; margin-left:5px; padding-top:1px; }</style>
-                    <a rel="nofollow" href='@Html.Raw("http://www.facebook.com/share.php?u=u=" + ConfigurationManager.AppSettings["UrlForFacebook_1"].ToString() + "/Home/ViewPost/" + Model.Stories[0].ID.ToString())'
+                    <a rel="nofollow" href='@Html.Raw("http://www.facebook.com/share.php?u=u=" + ConfigurationManager.AppSettings["UrlForFacebook"].ToString() + "/Home/ViewPost/" + Model.Stories[0].ID.ToString())'
                        class="fb_share_button" onclick="return fbs_click()" target="_blank" style="text-decoration:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Share</a>
                 </div>
             </div>
