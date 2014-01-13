@@ -27,6 +27,10 @@ namespace shareyourstory.net.Controllers
         {
             try
             {
+                UserProfile user = (UserProfile)Session["User"];
+
+                if (user.isActive == false)
+                    return RedirectToAction("Manage", "Account");
                 
                 if (!page.HasValue)
                     page = 1;
