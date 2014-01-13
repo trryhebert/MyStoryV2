@@ -20,7 +20,7 @@
         <div class="containerStory">
             @if (Model == null || Model.Count() == 0)
             { 
-               <div class="storyText">Please <a href="Member/Index">click here</a> and be the first to post a story.</div>
+               <div class="storyText">Please <a href="stories">click here</a> and be the first to post a story.</div>
             }
             else
             {
@@ -49,7 +49,7 @@
         <div class="containerStorySmall">
             @if (topRatedPosts == null || topRatedPosts.Count() == 0)
             { 
-               <div class="storyText">Please <a href="Home/Stories">click here</a> to view stories and be the first to like a story.</div>
+               <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to like a story.</div>
             }
             else
             {
@@ -73,7 +73,7 @@
         <div class="containerStorySmall">
             @if (popularPosts == null || popularPosts.Count() == 0)
             { 
-              <div class="storyText">Please <a href="Home/Stories">click here</a> to view stories and be the first to read a story.</div>
+              <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to read a story.</div>
             }
             else
             {

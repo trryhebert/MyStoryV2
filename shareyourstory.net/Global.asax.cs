@@ -20,9 +20,23 @@ namespace shareyourstory.net
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
+        }
+        public static void RegisterRoutes(RouteCollection routes)
+        {
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute("stories", "stories", new { controller = "Home", action = "Stories", id = "" });
+            routes.MapRoute("view", "stories/{id}", new { controller = "Home", action = "ViewPost", id = "" });
+            routes.MapRoute(
+                "Default",                                              // Route name
+                "{controller}/{action}/{id}",                           // URL with parameters
+                new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
+            );
+            //routes.MapRoute("stories", "Stories/{action}/{id}", new { controller = "Home", action = "Stories", id = "" });
+
         }
     }
 }

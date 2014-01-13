@@ -263,11 +263,14 @@ namespace shareyourstory.net.Controllers
         {
             string sortOption = Request.QueryString["SortOption"];
             string searchText = Request.QueryString["SearchText"];
+            int userId = 0;
+            if (int.TryParse(Request.QueryString["u"], out userId) == false)
+                userId = 0;
             StoriesListModel stories = new StoriesListModel();
             try
             {
                 // Initialize the cache and retrieve stories.
-                stories = doMemoryAndGetStories(sortOption, searchText);
+                stories = doMemoryAndGetStories(sortOption, searchText, userId);
                 stories.PageNoList = new List<string>();
                 //Initialize the stories properties
                 PopulateDDL(stories);
@@ -289,12 +292,13 @@ namespace shareyourstory.net.Controllers
             }
         }
 
-        private StoriesListModel doMemoryAndGetStories(string sortOption, string searchText)
+        private StoriesListModel doMemoryAndGetStories(string sortOption, string searchText, int userID = 0)
         {
             StoriesListModel stories = new StoriesListModel();
+            StoriesListModel retStories = new StoriesListModel();
             stories.SortOption = sortOption;
             stories.SearchText = searchText;
-
+            
             //Get minutes difference between now and last update
             TimeSpan span = new TimeSpan();
             if (HttpContext.Cache["LastUpdate"] != null)
@@ -326,7 +330,13 @@ namespace shareyourstory.net.Controllers
             else
                 stories.Stories = (List<StoriesDTO>)this.HttpContext.Cache["Stories"];
 
-            return stories;
+            retStories = stories;
+            if (userID > 0)
+                retStories.Stories = (from s in stories.Stories
+                                      where s.UserId == userID
+                                      select s).ToList<shareurstorydb.StoriesDTO>();
+
+            return retStories;
         }
 
         private StoriesListModel PopulateDDL(StoriesListModel stories)

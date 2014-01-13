@@ -1,13 +1,11 @@
 ﻿@model shareurstorydb.StoriesListModel
-                      
+@using System.Configuration
+
 @{
     ViewBag.Title = "View Post";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*@{
-    string pageurl = @Url.Action("ViewPost", "http://shareyourstory.dyndns-web.com:50418/Home/", new { id = @Model.Stories[0].ID });
-}*@
 
 <script src="@Url.Content("~/Scripts/app-viewpost.js")" language="javascript" type="text/javascript"></script>
 
@@ -16,50 +14,41 @@
 <script type="text/javascript">
     FB.Event.subscribe('edge.create', function (href, widget) {
         $.ajax({
-            //url: 'http://shareyourstory.dyndns-web.com:50418/Home/FBLike',
-            url: 'http://localhost:51132//Home/FBLike',
+            url: '@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook_2"].ToString() + "/Home/FBLike")',
             data: { id: @Model.Stories[0].ID },
             success: function (response) {
-                //alert(response);
                 var test = 'test';
             },
             error: function (e) {
-                //alert('An error occured');
                 alert(e.responseText);
             }
         });
-        
+
     });
 
-    FB.Event.subscribe('edge.remove', 
-      function(response) { 
+    FB.Event.subscribe('edge.remove',
+      function(response) {
           $.ajax({
-              //url: 'http://shareyourstory.dyndns-web.com:50418/Home/FBUnlike',
-              url: 'http://localhost:51132//Home/FBUnlike',
+              url: '@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook_2"].ToString() + "/Home/FBUnlike")',
               data: { id: @Model.Stories[0].ID },
-            success: function (response) {
-                //alert(response);
-                var test = 'test';
-            },
-            error: function (e) {
-                //alert('An error occured');
-                alert(e.responseText);
-            }
-        });
-      } 
-    ); 
+              success: function (response) {
+                  var test = 'test';
+              },
+              error: function (e) {
+                  alert(e.responseText);
+              }
+          });
+      }
+    );
 
     function fbs_click() {
         $.ajax({
-            //url: 'http://shareyourstory.dyndns-web.com:50418/Home/FBShare',
-            url: 'http://localhost:51132//Home/FBShare',
+            url: '@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook_2"].ToString() + "/Home/FBShare")',
             data: { id: @Model.Stories[0].ID },
             success: function (response) {
-                //alert(response);
                 var test = 'test';
             },
             error: function (e) {
-                //alert('An error occured');
                 alert(e.responseText);
             }
         });
@@ -69,32 +58,22 @@
 <div class="containerBig">
     <div class="containerInner">
         <div class="containerTitle">
-            <div class="containerTitleText">@Html.Raw(Model.Stories[0].Title) </div><div class="containerTitleSubText isDesktop">by @Html.Raw(Model.Stories[0].Name.ToString())</div><div class="clear"></div>
+            <div class="containerTitleText">@Html.Raw(Model.Stories[0].Title) </div><div class="containerTitleSubText">by @Html.ActionLink(Model.Stories[0].Name.ToString(), "Stories", new { u = Model.Stories[0].UserId }) </div>
         </div>
         <div style="clear:both;"></div>
         <div class="containerStory">
             <div style="float:left;">
                 <div style="float:left; width:90px; overflow:hidden;">
-                    <fb:like href="http://shareyourstory.dyndns-web.com:50418/Home/@Model.Stories[0].ID" send="false" layout="button_count" show_faces="false" font="lucida grande" />
+                    <fb:like href='@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook_1"].ToString() + "/Home/@Model.Stories[0].ID")' send="false" layout="button_count" show_faces="false" font="lucida grande" />
                 </div>
-                @*    <a name="fb_share" type="button_count" href="http://www.facebook.com/sharer.php" 
-                        share_url="http://shareyourstory.dyndns-web.com:50418/Home/ViewPost/2" onclick="return fbs_click()">Share</a>
-                    <script src="http://static.ak.fbcdn.net/connect.php/js/FB.Share" type="text/javascript"></script> *@
-                @*    <a rel="nofollow" href="http://www.facebook.com/share.php?u=http://shareyourstory.dyndns-web.com:50418/Home/ViewPost/@Model.Stories[0].ID" 
-                    onclick="return fbs_click()" target="_blank">Share on Facebook</a>*@
                 <div style="float:left;">
                     <style> html .fb_share_button { display: -moz-block; display:block; color:#3B5998; line-height:18px; width:60px; height:21px; background:url('/Content/images/fbshare_bg.jpg') no-repeat top right; background-size: 60px 20px; margin-left:5px; padding-top:1px; }</style>
-                    <a rel="nofollow" href="http://www.facebook.com/share.php?u=u=http://shareyourstory.dyndns-web.com:50418/Home/ViewPost/@Model.Stories[0].ID" 
-                        class="fb_share_button" onclick="return fbs_click()" target="_blank" style="text-decoration:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Share</a> 
+                    <a rel="nofollow" href='@Html.Raw("http://www.facebook.com/share.php?u=u=" + ConfigurationManager.AppSettings["UrlForFacebook_1"].ToString() + "/Home/ViewPost/" + Model.Stories[0].ID.ToString())'
+                       class="fb_share_button" onclick="return fbs_click()" target="_blank" style="text-decoration:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Share</a>
                 </div>
             </div>
-            <div class="isDesktop" style="float:right;">
-                <b>Posted:</b> @Html.Raw(Model.Stories[0].CreateDate.ToString("MMMM dd, yyyy")) &nbsp;|&nbsp;
-                <b>Likes:</b> @Html.Raw(Model.Stories[0].Likes.ToString())
-            </div>
-            <div class="isMobile"><br /><br />
-                by @Html.Raw(Model.Stories[0].Name.ToString())<br />
-                <b>Posted:</b> @Html.Raw(Model.Stories[0].CreateDate.ToString("MMMM dd, yyyy")) &nbsp;|&nbsp;
+            <div style="float:right;">
+                <b>Created Date:</b> @Html.Raw(Model.Stories[0].CreateDate.ToString("MMMM dd, yyyy")) &nbsp;|&nbsp;
                 <b>Likes:</b> @Html.Raw(Model.Stories[0].Likes.ToString())
             </div>
             <div style="clear:both; height:10px;"></div>
@@ -153,21 +132,21 @@
                             $('input[name="btnSubmit"]').attr('disabled', 'disabled');
                             $("#lblErrorLogin").css("display", "block");
                         }
-                    });                
+                    });
                 </script>
             }
         </div>
 
         <div style="clear:both; height:30px;"></div>
-     
+
         @foreach (var comment in Model.Comments)
-        {                
+        {
             <div class="containerTitle"><div class="containerTitleText" style="font-size:14px;">Comment by  @Html.Raw(comment.Name)</div><div class="containerTitleSubText">@Html.Raw(comment.CreateDate.ToString("MMMM dd, yyyy"))</div></div>
             <div style="clear:both;"></div>
             <div class="containerStory">
-                    <div class="storyTitle"></div>
-                    <div class="storyText">@Html.Raw(comment.Comment)</div>
-                    <div style="clear:both;"></div>
+                <div class="storyTitle"></div>
+                <div class="storyText">@Html.Raw(comment.Comment)</div>
+                <div style="clear:both;"></div>
             </div>
             <div style="clear:both; height:10px;"></div>
         }
