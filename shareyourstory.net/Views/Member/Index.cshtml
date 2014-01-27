@@ -22,7 +22,16 @@
                     <div style="margin: 20px 0 20px 0; border-bottom: 1px solid #828E3C;">
                         <a class="genericLink" style="font-size:larger" href='@Url.Action("View", new { id = post.ID })'>
                             @post.Title
-                        </a>&nbsp; <a class="genericLink" href='@Url.Action("Edit", new { id = post.ID })'>(Edit)</a>
+                        </a>&nbsp; 
+                        @if (post.isActive == true)
+                        { 
+                            <span>Active </span>
+                        }
+                        else
+                        {                            
+                            <span>Inactive </span>
+                        }
+                        <a class="genericLink" href='@Url.Action("Edit", new { id = post.ID })'>(Edit)</a>
                         <div>
                             @if (post.Post.Length > 150)
                             {

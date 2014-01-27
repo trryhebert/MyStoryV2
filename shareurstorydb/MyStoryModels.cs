@@ -16,6 +16,7 @@ namespace shareurstorydb
         public int Likes { get; set; }
         public DateTime CreateDate { get; set; }
         public DateTime UpdateDate { get; set; }
+        public bool isActive { get; set; }
     }
 
     //public class Users

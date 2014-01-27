@@ -86,7 +86,8 @@ namespace shareyourstory.net.Controllers
                     ID = 0,
                     Title = "",
                     Post = "",
-                    UserId = User.UserId
+                    UserId = User.UserId,
+                    isActive = true
                 };
                 return View("Edit", post);
             }
@@ -115,6 +116,10 @@ namespace shareyourstory.net.Controllers
                 savePost.Title = post["Title"];
                 savePost.UpdateDate = DateTime.Now;
                 savePost.UserId = User.UserId;
+                if (post["isActive"] != "false")
+                    savePost.isActive = true;
+                else
+                    savePost.isActive = false;
 
                 if (qry != null)
                 {
@@ -122,6 +127,7 @@ namespace shareyourstory.net.Controllers
                     qry.Title = savePost.Title;
                     qry.UpdateDate = DateTime.Now;
                     qry.UserId = savePost.UserId;
+                    qry.isActive = savePost.isActive;
                 }
                 else
                     DbContext.UserPosts.Add(savePost);

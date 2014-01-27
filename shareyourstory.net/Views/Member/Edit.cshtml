@@ -47,6 +47,8 @@
         </p>
         <p style="padding:5px 0px 5px 0px">
             <span class="genericText" style="font-size:12px">Title:</span>&nbsp;@Html.TextBoxFor(model => model.Title, new { style = "width:300px" })
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <span class="genericText" style="font-size:12px">Is Active:</span>&nbsp;@Html.CheckBoxFor(model => model.isActive)
         </p>
         <!-- Gets replaced with TinyMCE, remember HTML in a textarea should be encoded -->
         @Html.TextAreaFor(model => model.Post, new { id="post", name="post", rows="30", cols="60", style="width: 100%"})
