@@ -26,7 +26,9 @@ namespace shareurstorydb
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
+        [Required]
         public string UserName { get; set; }
+        [DefaultValue(true)]
         public bool isActive { get; set; }
     }
 

@@ -106,6 +106,7 @@ namespace shareyourstory.net.Controllers
                 // Attempt to register the user
                 try
                 {
+                    model.isActive = true;
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
                     SaveUserSession(model.UserName);
