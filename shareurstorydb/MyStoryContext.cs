@@ -38,12 +38,14 @@ namespace shareurstorydb
             context.UserProfiles.Add(new UserProfile
             {
                 UserId = 1,
-                UserName = "i_goguen@hotmail.com"
+                UserName = "isabelle@test.com",
+                isActive = true
             });
             context.UserProfiles.Add(new UserProfile
             {
                 UserId = 2,
-                UserName = "trryhebert@gmail.com"
+                UserName = "trryhebert@gmail.com",
+                isActive = true
             });
 
             //context.Users.Add(new Users
@@ -86,7 +88,8 @@ namespace shareurstorydb
                 Title = "Jane Austin quote (emma)1",
                 ID = 1,
                 UserId = 2,
-                UpdateDate = DateTime.Now
+                UpdateDate = DateTime.Now,
+                isActive = true
             });
             context.UserPosts.Add(new UserPost
             {
@@ -95,7 +98,8 @@ namespace shareurstorydb
                 Title = "Jane Austin quote (emma)2",
                 ID = 2,
                 UserId = 2,
-                UpdateDate = DateTime.Now
+                UpdateDate = DateTime.Now,
+                isActive = true
             });
             context.UserPosts.Add(new UserPost
             {
@@ -104,7 +108,8 @@ namespace shareurstorydb
                 Title = "Variation Under Domestication",
                 ID = 3,
                 UserId = 1,
-                UpdateDate = DateTime.Now
+                UpdateDate = DateTime.Now,
+                isActive = true
             });
             context.UserPosts.Add(new UserPost
             {
@@ -113,7 +118,8 @@ namespace shareurstorydb
                 Title = "Variation Under Nature",
                 ID = 4,
                 UserId = 1,
-                UpdateDate = DateTime.Now
+                UpdateDate = DateTime.Now,
+                isActive = true
             });
 
             base.Seed(context);
