@@ -29,7 +29,7 @@ namespace shareurstorydb
         [Required]
         public string UserName { get; set; }
         [DefaultValue(true)]
-        public bool isActive { get; set; }
+        public bool? isActive { get; set; }
     }
 
     public class RegisterExternalLoginModel
