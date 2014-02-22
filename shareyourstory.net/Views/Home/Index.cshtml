@@ -8,8 +8,8 @@
 }
 
 @*<p>
-    @Html.ActionLink("Create New", "Create")
-</p>*@
+        @Html.ActionLink("Create New", "Create")
+    </p>*@
 
 <div class="containerBig">
     <div class="containerInner">
@@ -19,21 +19,15 @@
         <div style="clear:both;"></div>
         <div class="containerStory">
             @if (Model == null || Model.Count() == 0)
-            { 
-               <div class="storyText">Please <a href="stories">click here</a> and be the first to post a story.</div>
+            {
+                <div class="storyText">Please <a href="stories">click here</a> and be the first to post a story.</div>
             }
             else
             {
-                foreach (var item in Model) {
+                foreach (var item in Model)
+                {
                     <div class="storyTitle">@Html.ActionLink(item.Title, "ViewPost", new { id = item.ID })</div>
-                    if(item.Post.Length > 160)
-                    {
-                        <div class="storyText">@Html.Raw(String.Concat(item.Post.Substring(0, 160), " ... "))</div>
-                    }
-                    else
-                    {
-                        <div class="storyText">@Html.Raw(item.Post)</div>
-                    }
+                    <div class="storyText">@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.Post.ToString(), 150))</div>
                 }
             }
         </div>
@@ -42,21 +36,21 @@
 <div class="containerSmall">
     <div class="containerInner">
         <div class="containerTitle">
-            <div class="imgThumb">&nbsp;</div>        
+            <div class="imgThumb">&nbsp;</div>
             <div class="containerTitleText">Most Likes</div>
         </div>
         <div style="clear:both;"></div>
         <div class="containerStorySmall">
             @if (topRatedPosts == null || topRatedPosts.Count() == 0)
-            { 
-               <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to like a story.</div>
+            {
+                <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to like a story.</div>
             }
             else
             {
                 foreach (var item in topRatedPosts)
                 {
                     <div class="storyTitle">@Html.ActionLink(item.post.Title, "ViewPost", new { id = item.post.ID }) <span style="color:Black; font-weight:normal; font-style:italic;">(@Html.Raw(item.numberLikes.ToString()) likes)</span></div>
-                    <div class="storyText">@Html.Raw(String.Concat(item.post.Post.Substring(0, 80), " ... "))</div>
+                    <div class="storyText">@Html.Raw(@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.post.Post.ToString(), 60)))</div>
                 }
             }
         </div>
@@ -72,15 +66,15 @@
         <div style="clear:both;"></div>
         <div class="containerStorySmall">
             @if (popularPosts == null || popularPosts.Count() == 0)
-            { 
-              <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to read a story.</div>
+            {
+                <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to read a story.</div>
             }
             else
             {
                 foreach (var item in popularPosts)
                 {
                     <div class="storyTitle">@Html.ActionLink(item.post.Title, "ViewPost", new { id = item.post.ID }) <span style="color:Black; font-weight:normal; font-style:italic;">(@Html.Raw(item.numberReadings.ToString()) read)</span></div>
-                    <div class="storyText">@Html.Raw(item.post.Post.Length <= 80 ? item.post.Post :String.Concat(item.post.Post.Substring(0, 80), " ... "))</div>
+                    <div class="storyText">@Html.Raw(@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.post.Post.ToString(), 60)))</div>
                 }
             }
         </div>

@@ -52,5 +52,16 @@ namespace shareyourstory.net.Controllers.Helpers
 
             return html;
         }
+        public static string ShortenAndStripHtml(string string_to_shorten, int string_length)
+        {
+            string str = string.IsNullOrEmpty(string_to_shorten)
+                ? ""
+                : System.Text.RegularExpressions.Regex.Replace(string_to_shorten, "<.+?>", string.Empty);
+            if (str.Length > string_length)
+                str = str.Substring(0, string_length - 3) + "...";
+
+            return str;
+        }
+
     }
 }

@@ -186,8 +186,6 @@ namespace shareyourstory.net.Controllers
         }
         private IEnumerable<UserPost> getUserPostsShort(Int32 userId)
         {
-            //todo: put this in helper: string str = System.Text.RegularExpressions.Regex.Replace(post.Post.ToString(), "<.+?>", string.Empty);
-            //
 
             try
             {

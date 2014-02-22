@@ -1,6 +1,6 @@
 ﻿@using shareurstorydb;
-@using shareurstorydb;
 @using PagedList;
+@using shareyourstory.net.Controllers.Helpers;
 
 @model PagedList.IPagedList<shareurstorydb.UserPost>
 @{
@@ -33,14 +33,7 @@
                         }
                         <a class="genericLink" href='@Url.Action("Edit", new { id = post.ID })'>(Edit)</a>
                         <div>
-                            @if (post.Post.Length > 150)
-                            {
-                                @Html.Raw(post.Post.ToString().Substring(0, 150) + "...")
-                            }
-                            else
-                            {
-                                @Html.Raw(post.Post.ToString())            
-                            }
+                            @Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(post.Post.ToString(), 150))
                         </div>
                     </div>
                 }
