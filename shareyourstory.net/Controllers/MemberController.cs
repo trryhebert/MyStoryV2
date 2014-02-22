@@ -184,5 +184,25 @@ namespace shareyourstory.net.Controllers
                 return null;
             }
         }
+        private IEnumerable<UserPost> getUserPostsShort(Int32 userId)
+        {
+            //todo: put this in helper: string str = System.Text.RegularExpressions.Regex.Replace(post.Post.ToString(), "<.+?>", string.Empty);
+            //
+
+            try
+            {
+                return (from posts in DbContext.UserPosts
+                        where posts.UserId == userId
+                        orderby posts.UpdateDate descending
+                        select posts);
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                ViewData["ErrorMsg"] = failMessage;
+                return null;
+            }
+        }
     }
 }
