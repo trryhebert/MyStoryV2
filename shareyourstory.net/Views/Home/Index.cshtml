@@ -74,7 +74,7 @@
                 foreach (var item in popularPosts)
                 {
                     <div class="storyTitle">@Html.ActionLink(item.post.Title, "ViewPost", new { id = item.post.ID }) <span style="color:Black; font-weight:normal; font-style:italic;">(@Html.Raw(item.numberReadings.ToString()) read)</span></div>
-                    <div class="storyText">@Html.Raw(@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.post.Post.ToString(), 60)))</div>
+                    <div class="storyText">@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.post.Post.ToString(), 60))</div>
                 }
             }
         </div>
