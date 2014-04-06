@@ -136,7 +136,9 @@ Caching... want to create a service that would run every 10 minutes and refresh 
                 <div style="clear:both;"></div>
                 <div class="containerStory">
                     <div class="storyTitle"></div>
-                    <div class="storyText">@Html.Raw(item.Post.Length <= 260 ? item.Post : String.Concat(item.Post.Substring(0, 260), " ... "))</div>
+                    <div class="storyText">
+                        @Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.Post.ToString(), 150))
+                    </div>
 
                     <div class="containerBottomLeft">
                         (<span style="color:blue">
