@@ -51,19 +51,18 @@ namespace shareyourstory.net.Controllers
 
             try
             {
+                UserProfile user = (UserProfile)Session["User"];
+                int userId = 0;
+                if (user != null)
+                    userId = user.UserId;
                 ViewData["AppID"] = ConfigurationManager.AppSettings["AppID"];
-
                 StoriesListModel stories = new StoriesListModel();
-                List<StoriesDTO> storiesDTO = Helpers.ControllerHelpers.GetStory(DbContext, id);
+                List<StoriesDTO> storiesDTO = Helpers.ControllerHelpers.GetStory(DbContext, id, userId);
                 stories.Stories = storiesDTO;
                 List<CommentsDTO> comments = ControllerHelpers.GetStoryComments(DbContext, id);
                 stories.Comments = comments;
 
                 //Save reading
-                UserProfile user = (UserProfile)Session["User"];
-                int userId = 0;
-                if (user != null)
-                    userId = user.UserId;
                 MyStoryContext _context = new MyStoryContext();
                 PostReadings read = new PostReadings();
                 read.PostID = id;
@@ -469,7 +468,7 @@ namespace shareyourstory.net.Controllers
                 DbContext.SaveChanges();
 
                 ViewData["AppID"] = ConfigurationManager.AppSettings["AppID"];
-                List<StoriesDTO> storiesDTO = Helpers.ControllerHelpers.GetStory(DbContext, PostID);
+                List<StoriesDTO> storiesDTO = Helpers.ControllerHelpers.GetStory(DbContext, PostID, user.UserId);
                 story.Stories = storiesDTO;
                 List<CommentsDTO> comments = ControllerHelpers.GetStoryComments(DbContext, PostID);
                 story.Comments = comments;

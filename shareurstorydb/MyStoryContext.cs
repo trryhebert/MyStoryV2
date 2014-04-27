@@ -13,9 +13,10 @@ namespace shareurstorydb
             : base("DefaultConnection")
         {
         }
-        
+
         public DbSet<UserPost> UserPosts { get; set; }
-        //public DbSet<Users> Users { get; set; }
+        public DbSet<UserFavorite> UserFavorites { get; set; }
+        public DbSet<UserFollow> UserFollows { get; set; }
         public DbSet<Tags> Tags { get; set; }
         public DbSet<PostTags> PostTags { get; set; }
         public DbSet<PostLikes> PostLikes { get; set; }
@@ -31,7 +32,6 @@ namespace shareurstorydb
     }
 
     public class CreateDb : DropCreateDatabaseIfModelChanges<MyStoryContext>
-    //public class CreateDb : DropCreateDatabaseAlways<MyStoryContext>
     {
         protected override void Seed(MyStoryContext context)
         {
@@ -47,39 +47,6 @@ namespace shareurstorydb
                 UserName = "trryhebert@gmail.com",
                 isActive = true
             });
-
-            //context.Users.Add(new Users
-            //{
-            //    Firstname = "Terry",
-            //    Lastname = "Hebert",
-            //    Country = "Can",
-            //    DOB = "1968-03-02",
-            //    CreateDate = DateTime.Now,
-            //    Email = "trryhebert@gmail.com",
-            //    FB_SignedRequest = "terry_facebook",
-            //    FB_SignedRequestDecoded = "decoded_facebook",
-            //    FB_UserID = "terryhebert",
-            //    Gender = "M",
-            //    ID = 1,
-            //    Password = "password100",
-            //    UpdateDate = DateTime.Now
-            //});
-            //context.Users.Add(new Users
-            //{
-            //    Firstname = "Isabelle",
-            //    Lastname = "Mrizek",
-            //    Country = "Can",
-            //    DOB = "1984-12-02",
-            //    CreateDate = DateTime.Now,
-            //    Email = "isabelle@gmail.com",
-            //    FB_SignedRequest = "isabelle_facebook",
-            //    FB_SignedRequestDecoded = "decoded_facebook",
-            //    FB_UserID = "isabellemrizek",
-            //    Gender = "F",
-            //    ID = 2,
-            //    Password = "password101",
-            //    UpdateDate = DateTime.Now
-            //});
 
             context.UserPosts.Add(new UserPost
             {
