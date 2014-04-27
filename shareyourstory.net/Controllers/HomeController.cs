@@ -30,7 +30,7 @@ namespace shareyourstory.net.Controllers
         }
         public ActionResult Index()
         {
-            
+
             try
             {
                 var latestPosts = Helpers.ControllerHelpers.GetLatestTopXUserPosts(3, DbContext);
@@ -290,44 +290,26 @@ namespace shareyourstory.net.Controllers
                 return View(stories);
             }
         }
-
+        public string Follow(int userId)
+        {
+            return "success";
+        }
+        public string Favorite(int userId)
+        {
+            return "success";
+        }
         private StoriesListModel doMemoryAndGetStories(string sortOption, string searchText, int userID = 0)
         {
             StoriesListModel stories = new StoriesListModel();
             StoriesListModel retStories = new StoriesListModel();
             stories.SortOption = sortOption;
             stories.SearchText = searchText;
-            
-            ////Get minutes difference between now and last update
-            //TimeSpan span = new TimeSpan();
-            //if (HttpContext.Cache["LastUpdate"] != null)
-            //{
-            //    DateTime startTime = Convert.ToDateTime(HttpContext.Cache["LastUpdate"]);
-            //    DateTime endTime = DateTime.Now;
-            //    span = endTime.Subtract(startTime);
-            //}
 
-            ////If cache is empty or cache is older than 2 hours, then remove cache and populate new stories
-            //if (this.HttpContext.Cache["Stories"] == null || this.HttpContext.Cache["LastUpdate"] == null || span.Minutes > Convert.ToInt32(ConfigurationManager.AppSettings["CacheMinutes"]) || ((List<StoriesDTO>)this.HttpContext.Cache["Stories"]).Count == 0)
-            //{
-            //    this.HttpContext.Cache.Remove("LastUpdate");
-            //    this.HttpContext.Cache.Insert("LastUpdate", DateTime.Now);
 
-            //    this.HttpContext.Cache.Remove("Stories");
+            //Get All Stories
+            List<StoriesDTO> storiesDTO = Helpers.ControllerHelpers.GetStories(DbContext);
+            stories.Stories = storiesDTO;
 
-                //Get All Stories
-                List<StoriesDTO> storiesDTO = Helpers.ControllerHelpers.GetStories(DbContext);
-                stories.Stories = storiesDTO;
-
-                ////Need to create a list that will not be modified
-                //StoriesListModel storiesCache = new StoriesListModel();
-                //storiesCache.Stories = new List<StoriesDTO>();
-                //storiesCache.Stories = stories.Stories.ToList();
-
-            //    this.HttpContext.Cache.Insert("Stories", storiesCache.Stories);
-            //}
-            //else
-            //    stories.Stories = (List<StoriesDTO>)this.HttpContext.Cache["Stories"];
 
             retStories = stories;
             if (userID > 0)

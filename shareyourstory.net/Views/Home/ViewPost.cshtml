@@ -55,11 +55,21 @@
     }
 
     $(document).ready(function(){
-        $("#AddToFavorite").click(function(e){
+        $(".FollowFavorite").click(function(e){
             e.preventDefault();
-            //$.get("/Home/Favorite",function(data,status){
-            //});
-        });
+            var arr = $(this).attr('href').split('/')
+            switch (arr[0])
+            {
+                case 'u':
+                    $.get("/Home/Follow/" + arr[1],function(data,status){
+                    });
+                    break;
+                case 's':
+                    $.get("/Home/Favorite/" + arr[1],function(data,status){
+                    });
+                    break;
+            }
+        });            
     });
 
 </script>
@@ -73,7 +83,7 @@
                 by @Html.ActionLink(Model.Stories[0].Name.ToString(), "Stories", new { u = Model.Stories[0].UserId }) &nbsp;
                 @if (Session["User"] != null)
                 {
-                    <a id="AddToFollow" href="javascript:bla()" style="font-size:75%">Follow</a>
+                    <a class="FollowFavorite" href="u/@Html.Raw(Model.Stories[0].UserId.ToString())" style="font-size:75%">Follow</a>
                 }
             </div>
         </div>
@@ -94,7 +104,7 @@
                 <b>Likes:</b> @Html.Raw(Model.Stories[0].Likes.ToString())
                 @if (Session["User"] != null)
                 {
-                    <a id="AddToFavorite" href="">@Html.Raw(Model.Stories[0].FaveLabel.ToString())</a>
+                    <a class="FollowFavorite" href="s/@Html.Raw(Model.Stories[0].ID.ToString())">@Html.Raw(Model.Stories[0].FaveLabel.ToString())</a>
                 }
             </div>
             <div style="clear:both; height:10px;"></div>
