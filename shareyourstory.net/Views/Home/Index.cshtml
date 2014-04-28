@@ -11,7 +11,71 @@
         @Html.ActionLink("Create New", "Create")
     </p>*@
 
+<script src="@Url.Content("~/Scripts/app-index.js")" language="javascript" type="text/javascript"></script>
 <div class="containerBig">
+    <div class="containerInner">
+        <div class="containerTitleMenu containerTitleMenuActive" id="menu1" onclick="story.toggleSection(1);">
+            <div class="containerTitleText">Latest Stories</div>
+        </div>
+        <div class="containerTitleMenu" id="menu2" onclick="story.toggleSection(2);">
+            <div class="containerTitleText">Most Likes</div>
+        </div>
+        <div class="containerTitleMenu" id="menu3" onclick="story.toggleSection(3);">
+            <div class="containerTitleText">Most Read</div>
+        </div>
+        <div style="clear:both;"></div>
+        <div class="containerStory" id="section1">
+            @if (Model == null || Model.Count() == 0)
+            {
+                <br /><br /><br />
+                <div class="storyText">Please <a href="stories">click here</a> and be the first to post a story.</div>
+                <br /><br /><br />
+            }
+            else
+            {
+                foreach (var item in Model)
+                {
+                    <div class="storyTitle">@Html.ActionLink(item.Title, "ViewPost", new { id = item.ID })</div>
+                    <div class="storyText">@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.Post.ToString(), 150))</div>
+                }
+            }
+        </div>
+        <div class="containerStory" id="section2" style="display:none;">
+            @if (topRatedPosts == null || topRatedPosts.Count() == 0)
+            {
+                <br /><br /><br />
+                <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to like a story.</div>
+                <br /><br /><br />
+            }
+            else
+            {
+                foreach (var item in topRatedPosts)
+                {
+                    <div class="storyTitle">@Html.ActionLink(item.post.Title, "ViewPost", new { id = item.post.ID }) <span style="color:Black; font-weight:normal; font-style:italic;">(@Html.Raw(item.numberLikes.ToString()) likes)</span></div>
+                    <div class="storyText">@Html.Raw(@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.post.Post.ToString(), 60)))</div>
+                }
+            }
+        </div>
+        <div class="containerStory" id="section3" style="display:none;">
+            @if (popularPosts == null || popularPosts.Count() == 0)
+            {
+                <br /><br /><br />
+                <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to read a story.</div>
+                <br /><br /><br />
+            }
+            else
+            {
+                foreach (var item in popularPosts)
+                {
+                    <div class="storyTitle">@Html.ActionLink(item.post.Title, "ViewPost", new { id = item.post.ID }) <span style="color:Black; font-weight:normal; font-style:italic;">(@Html.Raw(item.numberReadings.ToString()) read)</span></div>
+                    <div class="storyText">@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.post.Post.ToString(), 60))</div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@*<div class="containerBig">
     <div class="containerInner">
         <div class="containerTitle">
             <div class="containerTitleText">Latest Stories</div>
@@ -79,4 +143,4 @@
             }
         </div>
     </div>
-</div>
+</div>*@
