@@ -19,22 +19,22 @@ namespace shareurstorydb
         public bool isActive { get; set; }
     }
 
-    //public class Users
-    //{
-    //    public int ID { get; set; }
-    //    public string FB_UserID { get; set; }
-    //    public string Firstname { get; set; }
-    //    public string Lastname { get; set; }
-    //    public string Password { get; set; }
-    //    public string Email { get; set; }
-    //    public string DOB { get; set; }
-    //    public string Gender { get; set; }
-    //    public string Country { get; set; }
-    //    public string FB_SignedRequest { get; set; }
-    //    public string FB_SignedRequestDecoded { get; set; }
-    //    public DateTime CreateDate { get; set; }
-    //    public DateTime UpdateDate { get; set; }
-    //}
+    public class UserFavorite
+    {
+        public int ID { get; set; }
+        public int UserId { get; set; }
+        public int StoryId { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+    }
+    public class UserFollow
+    {
+        public int ID { get; set; }
+        public int UserId { get; set; }
+        public int FollowedUserId { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+    }
 
     public class Tags
     {
@@ -119,6 +119,8 @@ namespace shareurstorydb
         public String Post { get; set; }
         public String Name { get; set; }
         public int Likes { get; set; }
+        public string FaveLabel { get; set; }
+        public bool FaveInd { get; set; }
         public DateTime CreateDate { get; set; }
     }
 
@@ -151,4 +153,5 @@ namespace shareurstorydb
         public string Message { get; set; }
         public DateTime CreateDate { get; set; }
     }
+
 }

@@ -81,12 +81,19 @@ namespace shareyourstory.net.Controllers.Helpers
                     ).ToList();
         }
 
-        public static List<StoriesDTO> GetStory(MyStoryContext context, int id)
+        public static List<StoriesDTO> GetStory(MyStoryContext context, int storyId, int currentUserId)
         {
+            string faveLabel = "Add to favorites";
+            bool faveInd = false;
+            if (currentUserId > 0 && (from f in context.UserFavorites where f.StoryId == storyId && f.UserId == currentUserId select f).Count() > 0)
+            {
+                faveInd = true;
+                faveLabel = "Remove from favorites";
+            }
             return (from p in context.UserPosts
                     //where usrs.LastActivityDate <= duration 
                     join o in context.UserProfiles on p.UserId equals o.UserId
-                    where p.ID == id && p.isActive == true && o.isActive == true
+                    where p.ID == storyId && p.isActive == true && o.isActive == true
                     select new StoriesDTO()
                     {
                         ID = p.ID,
@@ -95,7 +102,9 @@ namespace shareyourstory.net.Controllers.Helpers
                         Post = p.Post,
                         Name = o.UserName, //o.Firstname + " " + o.Lastname,
                         CreateDate = p.CreateDate,
-                        Likes = (from l in context.PostLikes where l.PostID == p.ID select l).Count()
+                        Likes = (from l in context.PostLikes where l.PostID == p.ID select l).Count(),
+                        FaveLabel = faveLabel,
+                        FaveInd = faveInd,
                     }
                     ).ToList();
         }
