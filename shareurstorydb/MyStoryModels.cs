@@ -119,8 +119,8 @@ namespace shareurstorydb
         public String Post { get; set; }
         public String Name { get; set; }
         public int Likes { get; set; }
-        public string FaveLabel { get; set; }
         public bool FaveInd { get; set; }
+        public bool FollowInd { get; set; }
         public DateTime CreateDate { get; set; }
     }
 

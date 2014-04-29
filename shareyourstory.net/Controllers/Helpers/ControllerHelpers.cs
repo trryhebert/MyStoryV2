@@ -62,7 +62,7 @@ namespace shareyourstory.net.Controllers.Helpers
             return topposts;
         }
 
-        public static List<StoriesDTO> GetStories(MyStoryContext context)
+        public static List<StoriesDTO> GetStories(MyStoryContext context, int userId)
         {
             return (from p in context.UserPosts
                     //where usrs.LastActivityDate <= duration 
@@ -76,20 +76,18 @@ namespace shareyourstory.net.Controllers.Helpers
                         Post = p.Post,
                         Name = o.UserName, //o.Firstname + " " + o.Lastname,
                         CreateDate = p.CreateDate,
-                        Likes = (from l in context.PostLikes where l.PostID == p.ID select l).Count()
+                        Likes = (from l in context.PostLikes where l.PostID == p.ID select l).Count(),
+                        FaveInd = ((from f in context.UserFavorites where f.StoryId == p.ID && f.UserId == userId select f).Count() > 0),
+                        FollowInd = ((from f in context.UserFollows where f.FollowedUserId == p.UserId && f.UserId == userId select f).Count() > 0),
                     }
                     ).ToList();
         }
 
         public static List<StoriesDTO> GetStory(MyStoryContext context, int storyId, int currentUserId)
         {
-            string faveLabel = "Add to favorites";
             bool faveInd = false;
             if (currentUserId > 0 && (from f in context.UserFavorites where f.StoryId == storyId && f.UserId == currentUserId select f).Count() > 0)
-            {
                 faveInd = true;
-                faveLabel = "Remove from favorites";
-            }
             return (from p in context.UserPosts
                     //where usrs.LastActivityDate <= duration 
                     join o in context.UserProfiles on p.UserId equals o.UserId
@@ -103,8 +101,8 @@ namespace shareyourstory.net.Controllers.Helpers
                         Name = o.UserName, //o.Firstname + " " + o.Lastname,
                         CreateDate = p.CreateDate,
                         Likes = (from l in context.PostLikes where l.PostID == p.ID select l).Count(),
-                        FaveLabel = faveLabel,
                         FaveInd = faveInd,
+                        FollowInd = ((from f in context.UserFollows where f.FollowedUserId == p.UserId && f.UserId == currentUserId select f).Count() > 0)
                     }
                     ).ToList();
         }

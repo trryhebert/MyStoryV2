@@ -290,13 +290,119 @@ namespace shareyourstory.net.Controllers
                 return View(stories);
             }
         }
-        public string Follow(int userId)
+        [HttpGet]
+        public string Follow()
         {
-            return "success";
+            string retValue = "success";
+            try
+            {
+                int followedUserId = 0;
+                UserProfile user = (UserProfile)Session["User"];
+                if (int.TryParse(Request.RawUrl.Split('/')[3], out followedUserId) == false)
+                    throw new Exception("Followed user identifier could not be found.");
+                DbContext.UserFollows.Add(new UserFollow()
+                {
+                    FollowedUserId = followedUserId,
+                    UserId = user.UserId,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
+                });
+
+                DbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                retValue = "fail";
+            }
+            return retValue;
         }
-        public string Favorite(int userId)
+        [HttpGet]
+        public string Favorite()
         {
-            return "success";
+
+            string retValue = "success";
+            try
+            {
+                int storyId = 0;
+                UserProfile user = (UserProfile)Session["User"];
+                if (int.TryParse(Request.RawUrl.Split('/')[3], out storyId) == false)
+                    throw new Exception("Favorite story identifier could not be found.");
+                DbContext.UserFavorites.Add(new UserFavorite()
+                {
+                    StoryId = storyId,
+                    UserId = user.UserId,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
+                });
+
+                DbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                retValue = "fail";
+            }
+            return retValue;
+        }
+        [HttpGet]
+        public string FollowDel()
+        {
+            string retValue = "success";
+            try
+            {
+                int followedUserId = 0;
+                UserProfile user = (UserProfile)Session["User"];
+                if (int.TryParse(Request.RawUrl.Split('/')[3], out followedUserId) == false)
+                    throw new Exception("Followed user identifier could not be found.");
+                var follow = (from f in DbContext.UserFollows
+                             where f.FollowedUserId == followedUserId
+                                && f.UserId == user.UserId
+                             select f).FirstOrDefault<UserFollow>();
+                if (follow == null)
+                    throw new Exception("Follow instance could not be found.");
+                DbContext.UserFollows.Remove(follow);
+
+                DbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                retValue = "fail";
+            }
+            return retValue;
+
+        }
+        [HttpGet]
+        public string FavoriteDel()
+        {
+            string retValue = "success";
+            try
+            {
+                int storyId = 0;
+                UserProfile user = (UserProfile)Session["User"];
+                if (int.TryParse(Request.RawUrl.Split('/')[3], out storyId) == false)
+                    throw new Exception("Favorite story identifier could not be found.");
+                var fave = (from f in DbContext.UserFavorites
+                             where f.StoryId == storyId
+                                && f.UserId == user.UserId
+                             select f).FirstOrDefault<UserFavorite>();
+                if (fave == null)
+                    throw new Exception("Favorite instance could not be found.");
+                DbContext.UserFavorites.Remove(fave);
+
+                DbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                retValue = "fail";
+            }
+            return retValue;
         }
         private StoriesListModel doMemoryAndGetStories(string sortOption, string searchText, int userID = 0)
         {
@@ -304,10 +410,11 @@ namespace shareyourstory.net.Controllers
             StoriesListModel retStories = new StoriesListModel();
             stories.SortOption = sortOption;
             stories.SearchText = searchText;
+            UserProfile user = (UserProfile)Session["User"];
 
 
             //Get All Stories
-            List<StoriesDTO> storiesDTO = Helpers.ControllerHelpers.GetStories(DbContext);
+            List<StoriesDTO> storiesDTO = Helpers.ControllerHelpers.GetStories(DbContext, user.UserId);
             stories.Stories = storiesDTO;
 
 

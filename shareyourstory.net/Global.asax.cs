@@ -31,6 +31,11 @@ namespace shareyourstory.net
             routes.MapRoute("stories", "stories", new { controller = "Home", action = "Stories", id = "" });
             routes.MapRoute("view", "stories/{id}", new { controller = "Home", action = "ViewPost", id = "" });
             routes.MapRoute(
+                "Favorites",                                            // Route name
+                "favorites/{action}/{id}",                              // URL with parameters
+                new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
+            );
+            routes.MapRoute(
                 "Default",                                              // Route name
                 "{controller}/{action}/{id}",                           // URL with parameters
                 new { controller = "Home", action = "Index", id = "" }  // Parameter defaults
