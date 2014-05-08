@@ -213,5 +213,56 @@ namespace shareyourstory.net.Controllers.Helpers
             }
             return retVal;
         }
+        public static IEnumerable<UserStoryListModel> GetUserFavorites(MyStoryContext context, int id)
+        {
+            try
+            {
+                return (from f in context.UserFavorites
+                        join p in context.UserPosts on f.StoryId equals p.ID
+                        join u in context.UserProfiles on f.UserId equals u.UserId
+                        where f.UserId == id
+                        orderby f.CreateDate descending
+                        select new UserStoryListModel
+                        {
+                            StoryUserId = f.UserId,
+                            StoryId = f.StoryId,
+                            UserName = u.UserName,
+                            StoryTitle = p.Title,
+                            StorySample = SanitizeHtml.ShortenAndStripHtml(p.Post, 50)
+                        });
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(context, ex, out failMessage);
+                throw ex;
+            }
+        }
+        public static List<UserStoryListModel> GetUserFollowed(MyStoryContext context, int id)
+        {
+            try
+            {
+                List<UserStoryListModel> lst = (from f in context.UserFollows
+                                                join p in context.UserPosts on f.FollowedUserId equals p.UserId
+                                                join u in context.UserProfiles on f.FollowedUserId equals u.UserId
+                                                where f.UserId == id
+                                                orderby f.CreateDate descending
+                                                select new UserStoryListModel
+                                                {
+                                                    StoryUserId = f.UserId,
+                                                    StoryId = p.ID,
+                                                    UserName = u.UserName,
+                                                    StoryTitle = p.Title,
+                                                    StorySample = p.Post.Substring(0, 50)
+                                                }).ToList<UserStoryListModel>();
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(context, ex, out failMessage);
+                throw ex;
+            }
+        }
     }
 }

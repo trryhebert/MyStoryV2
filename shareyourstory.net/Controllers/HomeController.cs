@@ -17,12 +17,14 @@ namespace shareyourstory.net.Controllers
         int PageCount = 10;
         int PageNumber = 1;
         string failMessage = "";
+        UserProfile _user;
         //
         // GET: /Index/
 
         public HomeController()
             : base()
         {
+            UserProfile _user = (UserProfile)Session["User"];
             //Set the page size
             if (System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"] != null)
                 if (int.TryParse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"], out PageCount) == false)
@@ -36,6 +38,11 @@ namespace shareyourstory.net.Controllers
                 var latestPosts = Helpers.ControllerHelpers.GetLatestTopXUserPosts(3, DbContext);
                 ViewBag.PopularPosts = ControllerHelpers.GetPopularTopXUserPosts(3, DbContext);
                 ViewBag.TopRatedPosts = ControllerHelpers.GetTopRatedTopXUserPosts(3, DbContext);
+                if (_user != null)
+                {
+                    ViewBag.Favorites = ControllerHelpers.GetUserFavorites(DbContext, _user.UserId);
+                    ViewBag.Follows = ControllerHelpers.GetUserFollowed(DbContext, _user.UserId);
+                }
                 return View(latestPosts);
             }
             catch (Exception ex)
@@ -358,9 +365,9 @@ namespace shareyourstory.net.Controllers
                 if (int.TryParse(Request.RawUrl.Split('/')[3], out followedUserId) == false)
                     throw new Exception("Followed user identifier could not be found.");
                 var follow = (from f in DbContext.UserFollows
-                             where f.FollowedUserId == followedUserId
-                                && f.UserId == user.UserId
-                             select f).FirstOrDefault<UserFollow>();
+                              where f.FollowedUserId == followedUserId
+                                 && f.UserId == user.UserId
+                              select f).FirstOrDefault<UserFollow>();
                 if (follow == null)
                     throw new Exception("Follow instance could not be found.");
                 DbContext.UserFollows.Remove(follow);
@@ -387,9 +394,9 @@ namespace shareyourstory.net.Controllers
                 if (int.TryParse(Request.RawUrl.Split('/')[3], out storyId) == false)
                     throw new Exception("Favorite story identifier could not be found.");
                 var fave = (from f in DbContext.UserFavorites
-                             where f.StoryId == storyId
-                                && f.UserId == user.UserId
-                             select f).FirstOrDefault<UserFavorite>();
+                            where f.StoryId == storyId
+                               && f.UserId == user.UserId
+                            select f).FirstOrDefault<UserFavorite>();
                 if (fave == null)
                     throw new Exception("Favorite instance could not be found.");
                 DbContext.UserFavorites.Remove(fave);

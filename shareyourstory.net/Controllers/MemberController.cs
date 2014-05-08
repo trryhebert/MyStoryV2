@@ -144,35 +144,6 @@ namespace shareyourstory.net.Controllers
                 return View();
             }
         }
-        public ActionResult Followed()
-        {
-            try
-            {
-                UserProfile user = (UserProfile)Session["User"];
-                return View(getUserFollowed(user.UserId));
-            }
-            catch (Exception ex)
-            {
-                string failMessage = "";
-                ControllerHelpers.LogError(DbContext, ex, out failMessage);
-                return null;
-            }
-        }
-
-        public ActionResult Favorites(Int32 id)
-        {
-            try
-            {
-                return View(getUserFavorites(id));
-            }
-            catch (Exception ex)
-            {
-                string failMessage = "";
-                ControllerHelpers.LogError(DbContext, ex, out failMessage);
-                return null;
-            }
-        }
-
 
         private ActionResult gotoLoginPage(string retURL)
         {
@@ -231,60 +202,5 @@ namespace shareyourstory.net.Controllers
                 return null;
             }
         }
-        private IEnumerable<UserStoryListModel> getUserFavorites(int id)
-        {
-            try
-            {
-                return (from f in DbContext.UserFavorites
-                        join p in DbContext.UserPosts on f.StoryId equals p.ID
-                        join u in DbContext.UserProfiles on f.UserId equals u.UserId
-                        where f.UserId == id
-                        orderby f.CreateDate descending
-                        select new UserStoryListModel
-                        {
-                            StoryUserId = f.UserId,
-                            StoryId = f.StoryId,
-                            UserName = u.UserName,
-                            StoryTitle = p.Title,
-                            StorySample = SanitizeHtml.ShortenAndStripHtml(p.Post, 50)
-                        });
-            }   
-            catch (Exception ex)
-            {
-                string failMessage = "";
-                ControllerHelpers.LogError(DbContext, ex, out failMessage);
-                ViewData["ErrorMsg"] = failMessage;
-                return null;
-            }
-        }
-        private List<UserStoryListModel> getUserFollowed(int  id)
-        {
-            try
-            {
-                List<UserStoryListModel> lst = (from f in DbContext.UserFollows
-                                                join p in DbContext.UserPosts on f.FollowedUserId equals p.UserId
-                                                join u in DbContext.UserProfiles on f.FollowedUserId equals u.UserId
-                                                where f.UserId == id
-                                                orderby f.CreateDate descending
-                                                select new UserStoryListModel
-                                                {
-                                                    StoryUserId = f.UserId,
-                                                    StoryId = p.ID,
-                                                    UserName = u.UserName,
-                                                    StoryTitle = p.Title,
-                                                    StorySample = p.Post.Substring(0, 50)
-                                                }).ToList<UserStoryListModel>();
-                return lst;
-            }
-            catch (Exception ex)
-            {
-                string failMessage = "";
-                ControllerHelpers.LogError(DbContext, ex, out failMessage);
-                ViewData["ErrorMsg"] = failMessage;
-                return null;
-            }
-        }
-
-
     }
 }
