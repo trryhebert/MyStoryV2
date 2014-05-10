@@ -228,8 +228,8 @@ namespace shareyourstory.net.Controllers.Helpers
                             StoryId = f.StoryId,
                             UserName = u.UserName,
                             StoryTitle = p.Title,
-                            StorySample = SanitizeHtml.ShortenAndStripHtml(p.Post, 50)
-                        });
+                            StorySample = p.Post.Substring(0, 50)
+                        }).ToList<UserStoryListModel>();
             }
             catch (Exception ex)
             {

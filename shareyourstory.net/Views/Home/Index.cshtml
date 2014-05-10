@@ -7,6 +7,7 @@
     IEnumerable<TopPostLikes> topRatedPosts = ViewBag.TopRatedPosts;
     IEnumerable<UserStoryListModel> favorites = ViewBag.Favorites;
     IEnumerable<UserStoryListModel> follows = ViewBag.Follows;
+    bool loggedIn = ViewBag.LoggedIn;
 }
 
 @*<p>
@@ -25,14 +26,11 @@
         <div class="containerTitleMenu" id="menu3" onclick="story.toggleSection(3);">
             <div class="containerTitleText">Most Read</div>
         </div>
-        @if (favorites != null)
-        {
+        @if (loggedIn)
+        { 
             <div class="containerTitleMenu" id="menu4" onclick="story.toggleSection(4);">
                 <div class="containerTitleText">Favorites</div>
             </div>
-        }
-        @if (follows != null)
-        {
             <div class="containerTitleMenu" id="menu5" onclick="story.toggleSection(5);">
                 <div class="containerTitleText">Followed</div>
             </div>
@@ -87,27 +85,39 @@
             }
         </div>
 
-        @if (favorites != null || favorites.Count() > 0)
-        {
-            <div class="containerStory" id="section3" style="display:none;">
-                @foreach (UserStoryListModel item in favorites)
+        <div class="containerStory" id="section4" style="display:none;">
+            @if (favorites == null || favorites.Count() == 0)
+            {
+                <br /><br /><br />
+                <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to read a story.</div>
+                <br /><br /><br />
+            }
+            else
+            {
+                foreach (UserStoryListModel item in favorites)
                 {
-                    <div class="storyTitle">@Html.ActionLink(item.StoryTitle, "ViewPost", new { id = item.StoryId }) <span style="color:Black; font-weight:normal; font-style:italic;">(@Html.Raw(item.numberReadings.ToString()) read)</span></div>
+                    <div class="storyTitle">@Html.ActionLink(item.StoryTitle, "ViewPost", new { id = item.StoryId }) </div>
                     <div class="storyText">@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.StorySample, 60))</div>
                 }
-            </div>
-        }
+            }
+        </div>
 
-        @if (follows != null || follows.Count() > 0)
-        {
-            <div class="containerStory" id="section3" style="display:none;">
-                @foreach (UserStoryListModel item in follows)
+        <div class="containerStory" id="section5" style="display:none;">
+            @if (follows == null || follows.Count() == 0)
+            {
+                <br /><br /><br />
+                <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to read a story.</div>
+                <br /><br /><br />
+            }
+            else
+            {
+                foreach (UserStoryListModel item in follows)
                 {
-                    <div class="storyTitle">@Html.ActionLink(item.StoryTitle, "ViewPost", new { id = item.StoryId }) <span style="color:Black; font-weight:normal; font-style:italic;">(@Html.Raw(item.numberReadings.ToString()) read)</span></div>
+                    <div class="storyTitle">@Html.ActionLink(item.StoryTitle, "ViewPost", new { id = item.StoryId }) </div>
                     <div class="storyText">@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.StorySample, 60))</div>
                 }
-            </div>
-        }
+            }
+        </div>
 
     </div>
 </div>

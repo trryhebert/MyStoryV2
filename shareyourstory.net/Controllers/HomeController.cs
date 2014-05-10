@@ -24,7 +24,6 @@ namespace shareyourstory.net.Controllers
         public HomeController()
             : base()
         {
-            UserProfile _user = (UserProfile)Session["User"];
             //Set the page size
             if (System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"] != null)
                 if (int.TryParse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"], out PageCount) == false)
@@ -35,13 +34,17 @@ namespace shareyourstory.net.Controllers
 
             try
             {
-                var latestPosts = Helpers.ControllerHelpers.GetLatestTopXUserPosts(3, DbContext);
-                ViewBag.PopularPosts = ControllerHelpers.GetPopularTopXUserPosts(3, DbContext);
-                ViewBag.TopRatedPosts = ControllerHelpers.GetTopRatedTopXUserPosts(3, DbContext);
+                if (Session["User"] != null)
+                    _user = (UserProfile)Session["User"];
+                var latestPosts = Helpers.ControllerHelpers.GetLatestTopXUserPosts(10, DbContext);
+                ViewBag.PopularPosts = ControllerHelpers.GetPopularTopXUserPosts(10, DbContext);
+                ViewBag.TopRatedPosts = ControllerHelpers.GetTopRatedTopXUserPosts(10, DbContext);
+                ViewBag.LoggedIn = false;
                 if (_user != null)
                 {
                     ViewBag.Favorites = ControllerHelpers.GetUserFavorites(DbContext, _user.UserId);
                     ViewBag.Follows = ControllerHelpers.GetUserFollowed(DbContext, _user.UserId);
+                    ViewBag.LoggedIn = true;
                 }
                 return View(latestPosts);
             }
