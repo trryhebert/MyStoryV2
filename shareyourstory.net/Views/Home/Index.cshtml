@@ -96,7 +96,12 @@
             {
                 foreach (UserStoryListModel item in favorites)
                 {
-                    <div class="storyTitle">@Html.ActionLink(item.StoryTitle, "ViewPost", new { id = item.StoryId }) </div>
+                    <div class="storyTitle">
+                        @Html.ActionLink(item.StoryTitle, "ViewPost", new { id = item.StoryId }) 
+                        &nbsp;(
+                        @Html.Raw("<a href='Stories?u=" + item.StoryUserId.ToString() + "'>" + item.UserName + "</a>")
+                        )
+                    </div>
                     <div class="storyText">@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.StorySample, 60))</div>
                 }
             }
@@ -113,7 +118,10 @@
             {
                 foreach (UserStoryListModel item in follows)
                 {
-                    <div class="storyTitle">@Html.ActionLink(item.StoryTitle, "ViewPost", new { id = item.StoryId }) </div>
+                    <div class="storyTitle">
+                        @Html.Raw("<a href='Stories?u=" + item.StoryUserId.ToString() + "'>" + item.UserName + "</a>")
+                        @Html.ActionLink(item.StoryTitle, "ViewPost", new { id = item.StoryId }) 
+                    </div>
                     <div class="storyText">@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.StorySample, 60))</div>
                 }
             }

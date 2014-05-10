@@ -224,7 +224,7 @@ namespace shareyourstory.net.Controllers.Helpers
                         orderby f.CreateDate descending
                         select new UserStoryListModel
                         {
-                            StoryUserId = f.UserId,
+                            StoryUserId = p.UserId,
                             StoryId = f.StoryId,
                             UserName = u.UserName,
                             StoryTitle = p.Title,
@@ -249,7 +249,7 @@ namespace shareyourstory.net.Controllers.Helpers
                                                 orderby f.CreateDate descending
                                                 select new UserStoryListModel
                                                 {
-                                                    StoryUserId = f.UserId,
+                                                    StoryUserId = f.FollowedUserId,
                                                     StoryId = p.ID,
                                                     UserName = u.UserName,
                                                     StoryTitle = p.Title,
