@@ -55,11 +55,44 @@
     }
 
     $(document).ready(function(){
-        $("#AddToFavorite").click(function(e){
+        $(".FollowFavorite").click(function(e){
             e.preventDefault();
-            //$.get("/Home/Favorite",function(data,status){
-            //});
-        });
+            var arr = $(this).attr('href').split('/');
+            var link = $(this);
+            switch (arr[0])
+            {
+                case 'ins_u':
+                    $.get("/Home/Follow/" + arr[1],function(status){
+                        if (status == "success")
+                        {
+                            link.text("Un-follow");
+                            link.attr('href', 'del_u/' + arr[1]);
+                        }
+                    });
+                    break;
+                case 'del_u':
+                    $.get("/Home/FollowDel/" + arr[1],function(status){
+                        link.text("Follow");
+                        link.attr('href', 'ins_u/' + arr[1]);
+                    });
+                    break;
+                case 'ins_s':
+                    $.get("/Home/Favorite/" + arr[1],function(status){
+                        if (status == "success")
+                        {
+                            link.text("Remove from favorites");
+                            link.attr('href', 'del_s/' + arr[1]);
+                        }
+                    });
+                    break;
+                case 'del_s':
+                    $.get("/Home/FavoriteDel/" + arr[1],function(status){
+                        link.text("Add to favorites");
+                        link.attr('href', 'ins_s/' + arr[1]);
+                    });
+                    break;
+            }
+        });            
     });
 
 </script>
@@ -73,7 +106,14 @@
                 by @Html.ActionLink(Model.Stories[0].Name.ToString(), "Stories", new { u = Model.Stories[0].UserId }) &nbsp;
                 @if (Session["User"] != null)
                 {
-                    <a id="AddToFollow" href="javascript:bla()" style="font-size:75%">Follow</a>
+                    if (Model.Stories[0].FollowInd)
+                    { 
+                        <a class="FollowFavorite" href="del_u/@Html.Raw(Model.Stories[0].UserId.ToString())" style="font-size:75%">Un-follow</a>
+                    }
+                    else
+                    { 
+                        <a class="FollowFavorite" href="ins_u/@Html.Raw(Model.Stories[0].UserId.ToString())" style="font-size:75%">Follow</a>
+                    }
                 }
             </div>
         </div>
@@ -94,7 +134,14 @@
                 <b>Likes:</b> @Html.Raw(Model.Stories[0].Likes.ToString())
                 @if (Session["User"] != null)
                 {
-                    <a id="AddToFavorite" href="">@Html.Raw(Model.Stories[0].FaveLabel.ToString())</a>
+                    if (Model.Stories[0].FaveInd)
+                    { 
+                        <a class="FollowFavorite" href="del_s/@Html.Raw(Model.Stories[0].ID.ToString())">Remove from favorites</a>
+                    }
+                    else
+                    {
+                        <a class="FollowFavorite" href="ins_s/@Html.Raw(Model.Stories[0].ID.ToString())">Add to favorites</a>                        
+                    }
                 }
             </div>
             <div style="clear:both; height:10px;"></div>

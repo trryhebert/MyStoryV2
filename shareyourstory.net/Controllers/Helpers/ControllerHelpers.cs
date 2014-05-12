@@ -62,7 +62,7 @@ namespace shareyourstory.net.Controllers.Helpers
             return topposts;
         }
 
-        public static List<StoriesDTO> GetStories(MyStoryContext context)
+        public static List<StoriesDTO> GetStories(MyStoryContext context, int userId)
         {
             return (from p in context.UserPosts
                     //where usrs.LastActivityDate <= duration 
@@ -76,20 +76,18 @@ namespace shareyourstory.net.Controllers.Helpers
                         Post = p.Post,
                         Name = o.UserName, //o.Firstname + " " + o.Lastname,
                         CreateDate = p.CreateDate,
-                        Likes = (from l in context.PostLikes where l.PostID == p.ID select l).Count()
+                        Likes = (from l in context.PostLikes where l.PostID == p.ID select l).Count(),
+                        FaveInd = ((from f in context.UserFavorites where f.StoryId == p.ID && f.UserId == userId select f).Count() > 0),
+                        FollowInd = ((from f in context.UserFollows where f.FollowedUserId == p.UserId && f.UserId == userId select f).Count() > 0),
                     }
                     ).ToList();
         }
 
         public static List<StoriesDTO> GetStory(MyStoryContext context, int storyId, int currentUserId)
         {
-            string faveLabel = "Add to favorites";
             bool faveInd = false;
             if (currentUserId > 0 && (from f in context.UserFavorites where f.StoryId == storyId && f.UserId == currentUserId select f).Count() > 0)
-            {
                 faveInd = true;
-                faveLabel = "Remove from favorites";
-            }
             return (from p in context.UserPosts
                     //where usrs.LastActivityDate <= duration 
                     join o in context.UserProfiles on p.UserId equals o.UserId
@@ -103,8 +101,8 @@ namespace shareyourstory.net.Controllers.Helpers
                         Name = o.UserName, //o.Firstname + " " + o.Lastname,
                         CreateDate = p.CreateDate,
                         Likes = (from l in context.PostLikes where l.PostID == p.ID select l).Count(),
-                        FaveLabel = faveLabel,
                         FaveInd = faveInd,
+                        FollowInd = ((from f in context.UserFollows where f.FollowedUserId == p.UserId && f.UserId == currentUserId select f).Count() > 0)
                     }
                     ).ToList();
         }
@@ -214,6 +212,57 @@ namespace shareyourstory.net.Controllers.Helpers
                 failMessage = innerEx.Message;
             }
             return retVal;
+        }
+        public static IEnumerable<UserStoryListModel> GetUserFavorites(MyStoryContext context, int id)
+        {
+            try
+            {
+                return (from f in context.UserFavorites
+                        join p in context.UserPosts on f.StoryId equals p.ID
+                        join u in context.UserProfiles on f.UserId equals u.UserId
+                        where f.UserId == id
+                        orderby f.CreateDate descending
+                        select new UserStoryListModel
+                        {
+                            StoryUserId = p.UserId,
+                            StoryId = f.StoryId,
+                            UserName = u.UserName,
+                            StoryTitle = p.Title,
+                            StorySample = p.Post.Substring(0, 50)
+                        }).ToList<UserStoryListModel>();
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(context, ex, out failMessage);
+                throw ex;
+            }
+        }
+        public static List<UserStoryListModel> GetUserFollowed(MyStoryContext context, int id)
+        {
+            try
+            {
+                List<UserStoryListModel> lst = (from f in context.UserFollows
+                                                join p in context.UserPosts on f.FollowedUserId equals p.UserId
+                                                join u in context.UserProfiles on f.FollowedUserId equals u.UserId
+                                                where f.UserId == id
+                                                orderby f.CreateDate descending
+                                                select new UserStoryListModel
+                                                {
+                                                    StoryUserId = f.FollowedUserId,
+                                                    StoryId = p.ID,
+                                                    UserName = u.UserName,
+                                                    StoryTitle = p.Title,
+                                                    StorySample = p.Post.Substring(0, 50)
+                                                }).ToList<UserStoryListModel>();
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(context, ex, out failMessage);
+                throw ex;
+            }
         }
     }
 }

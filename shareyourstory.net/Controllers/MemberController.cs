@@ -144,20 +144,6 @@ namespace shareyourstory.net.Controllers
                 return View();
             }
         }
-        public ActionResult Favorites(Int32 id)
-        {
-            try
-            {
-                return View(getUserFavorites(id));
-            }
-            catch (Exception ex)
-            {
-                string failMessage = "";
-                ControllerHelpers.LogError(DbContext, ex, out failMessage);
-                return null;
-            }
-        }
-
 
         private ActionResult gotoLoginPage(string retURL)
         {
@@ -216,24 +202,5 @@ namespace shareyourstory.net.Controllers
                 return null;
             }
         }
-        private IEnumerable<UserFavorite> getUserFavorites(int id)
-        {
-            try
-            {
-                return (from faves in DbContext.UserFavorites
-                        where faves.UserId == id
-                        orderby faves.CreateDate descending
-                        select faves);
-            }
-            catch (Exception ex)
-            {
-                string failMessage = "";
-                ControllerHelpers.LogError(DbContext, ex, out failMessage);
-                ViewData["ErrorMsg"] = failMessage;
-                return null;
-            }
-        }
-
-
     }
 }

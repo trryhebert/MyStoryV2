@@ -119,8 +119,8 @@ namespace shareurstorydb
         public String Post { get; set; }
         public String Name { get; set; }
         public int Likes { get; set; }
-        public string FaveLabel { get; set; }
         public bool FaveInd { get; set; }
+        public bool FollowInd { get; set; }
         public DateTime CreateDate { get; set; }
     }
 
@@ -136,7 +136,14 @@ namespace shareurstorydb
         public string SortOption { get; set; }
         public List<CommentsDTO> Comments { get; set; }
     }
-
+    public class UserStoryListModel
+    {
+        public int StoryUserId { get; set; }
+        public int StoryId { get; set; }
+        public string UserName { get; set; }
+        public string StoryTitle { get; set; }
+        public string StorySample { get; set; }
+    }
     public class Contacts
     {
         public int ID { get; set; }
