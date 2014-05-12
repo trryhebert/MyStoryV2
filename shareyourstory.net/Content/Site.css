@@ -18,7 +18,7 @@ time, mark, audio, video, m1 {
   margin: 0;  padding: 0;  border: 0;  font: inherit;  font-size: 100%;  vertical-align: baseline;  font-family:arial;  
 }
 
-body { background-color: #F5F7DF; font-family: Arial; font-size:11px; line-height:14px; text-align:center;}
+body { background-color: #F5F7DF; font-family: Arial; font-size:12px; line-height:14px; text-align:center;}
 h1 { font-size: 18pt; line-height: 20pt; margin-bottom: 10px;}
 .clear {clear:both;}
 .topBar {background-color: #C4D469; width: 100%;}
@@ -60,21 +60,21 @@ h1 { font-size: 18pt; line-height: 20pt; margin-bottom: 10px;}
 .imgThumb {width:32px; height:25px; background-image:url('images/thumbGreen.jpg'); background-repeat:no-repeat; float:left; margin-top:2px; background-size: Auto 25px; margin-left:5px;}
 .imgBooks {width:57px; height:25px; background-image:url('images/booksGreen.jpg'); background-repeat:no-repeat; float:left; margin-top:2px; background-size: Auto 25px; margin-left:5px;}
 
-.search {padding-top:5px;}
-.searchText {float:left; width:13%; padding-top:2px;}
-.searchInput {float:left; width:65%; margin-right:2%; text-align:right;}
-.searchInput input {padding-left:2px; width:98%;}
+.search {float:left; width:50%;}
+.searchText {float:left; width:100%; padding-top:2px;}
+.searchInput {float:left; width:80%; margin-right:5%;}
+.searchInput input {padding-left:2px; width:100%; font-size:12px; line-height:12px; height:16++px;}
 .searchInput select {width: 150px;}
-.searchButton {float:right; width:20%; text-align:right;}
-.searchButton input {width: 100%;}
+.searchButton {float:right; width:15%;}
+.searchButton img{max-width: 100%;}
 
 .searchInputTop {float:left; width:78%; margin-right:2%; text-align:right;}
 .searchInputTop input {width:100%;}
 .searchButtonTop {float:right; width:20%; text-align:right;}
 
 .sort {width:90%;}
-.sortInner {float:right;}
-.sort select {height:18px; font-size:10px; width:100px;}
+.sortInner {float:right; width:auto;}
+.sort select {font-size:12px; line-height:12px; width:100px; height:22px;}
 .pageLeft { margin-top:2px; background: url('../Content/images/arrowLeft.png') no-repeat; display:block; width: 10px; height: 11px; float:left; text-indent: -9999px; /* hides the link text */ } 
 .pageRight { margin-top:2px; background: url('../Content/images/arrowRight.png') no-repeat; display:block; width: 10px; height: 11px; float:left; text-indent: -9999px; /* hides the link text */ } 
 .pageLeftD { margin-top:2px; background: url('../Content/images/arrowLeftD.png') no-repeat; display:block; width: 10px; height: 11px; float:left; text-indent: -9999px; /* hides the link text */ } 
@@ -138,6 +138,8 @@ h1 { font-size: 18pt; line-height: 20pt; margin-bottom: 10px;}
     
     .searchText {width:20%;}
     .searchInput {width:58%;}
+
+    .search {display:none;}
     
     .sortInner {float:none;}
     .pagingLeft {float:none; padding-left:15px;}

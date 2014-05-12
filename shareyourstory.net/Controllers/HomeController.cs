@@ -28,22 +28,38 @@ namespace shareyourstory.net.Controllers
                 if (int.TryParse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"], out PageCount) == false)
                     PageNumber = 10;
         }
+
         public ActionResult Index()
         {
-            
+            string sortOption = Request.QueryString["SortOption"];
+            string searchText = Request.QueryString["SearchText"];
+            int userId = 0;
+            if (int.TryParse(Request.QueryString["u"], out userId) == false)
+                userId = 0;
+            StoriesListModel stories = new StoriesListModel();
             try
             {
-                var latestPosts = Helpers.ControllerHelpers.GetLatestTopXUserPosts(3, DbContext);
-                ViewBag.PopularPosts = ControllerHelpers.GetPopularTopXUserPosts(3, DbContext);
-                ViewBag.TopRatedPosts = ControllerHelpers.GetTopRatedTopXUserPosts(3, DbContext);
-                return View(latestPosts);
+                // Initialize the cache and retrieve stories.
+                stories = doMemoryAndGetStories(sortOption, searchText, userId);
+                stories.PageNoList = new List<string>();
+                //Initialize the stories properties
+                PopulateDDL(stories);
+                //Do Searching
+                Searching(stories, searchText);//collection);
+                //Do Sorting
+                Sorting(stories, sortOption);//collection);
+                //Do Paging
+                Paging(stories);
+
+                return View(stories);
             }
             catch (Exception ex)
             {
                 ControllerHelpers.LogError(DbContext, ex, out failMessage);
                 ViewData["ErrorMsg"] = failMessage;
+                ControllerContext.RequestContext.HttpContext.Trace.Write(ex.ToString());
+                return View(stories);
             }
-            return View();
         }
 
         public ActionResult ViewPost(int id)
@@ -258,39 +274,6 @@ namespace shareyourstory.net.Controllers
         }
 
         #region Stories
-        public ActionResult stories()//FormCollection collection)
-        {
-            string sortOption = Request.QueryString["SortOption"];
-            string searchText = Request.QueryString["SearchText"];
-            int userId = 0;
-            if (int.TryParse(Request.QueryString["u"], out userId) == false)
-                userId = 0;
-            StoriesListModel stories = new StoriesListModel();
-            try
-            {
-                // Initialize the cache and retrieve stories.
-                stories = doMemoryAndGetStories(sortOption, searchText, userId);
-                stories.PageNoList = new List<string>();
-                //Initialize the stories properties
-                PopulateDDL(stories);
-                //Do Searching
-                Searching(stories, searchText);//collection);
-                //Do Sorting
-                Sorting(stories, sortOption);//collection);
-                //Do Paging
-                Paging(stories);
-
-                return View(stories);
-            }
-            catch (Exception ex)
-            {
-                ControllerHelpers.LogError(DbContext, ex, out failMessage);
-                ViewData["ErrorMsg"] = failMessage;
-                ControllerContext.RequestContext.HttpContext.Trace.Write(ex.ToString());
-                return View(stories);
-            }
-        }
-
         private StoriesListModel doMemoryAndGetStories(string sortOption, string searchText, int userID = 0)
         {
             StoriesListModel stories = new StoriesListModel();
@@ -348,8 +331,13 @@ namespace shareyourstory.net.Controllers
 
             stories.SortOptions = new[] {
                     new SelectListItem { Value = "0", Text = "Most Recent" },
-                    new SelectListItem { Value = "1", Text = "Alphabetical" },
-                    new SelectListItem { Value = "2", Text = "Most Likes" }
+                    new SelectListItem { Value = "1", Text = "Most Likes" },
+                    new SelectListItem { Value = "2", Text = "Alphabetical" }
+                    //new SelectListItem { Value = "0", Text = "Most Recent" },
+                    //new SelectListItem { Value = "1", Text = "Most Likes" },
+                    //new SelectListItem { Value = "2", Text = "Most Read" },
+                    //new SelectListItem { Value = "3", Text = "My Follows" },
+                    //new SelectListItem { Value = "4", Text = "My Favorites" }
                 };
 
             stories.SearchCategories = new[] {

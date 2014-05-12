@@ -1,146 +1,154 @@
-﻿@model IEnumerable<shareurstorydb.UserPost>
+﻿@model shareurstorydb.StoriesListModel
 
 @{
-    ViewBag.Title = "Share My Story";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    IEnumerable<shareurstorydb.TopPostReadings> popularPosts = ViewBag.PopularPosts;
-    IEnumerable<shareurstorydb.TopPostLikes> topRatedPosts = ViewBag.TopRatedPosts;
 }
+<script language="javascript" type="text/javascript">
+    function GetHref(pageNo) {
+        return "?PageNumber=" + pageNo + "&SearchText=" + $(".SearchText").val() + "&SortOption=" + document.getElementById("SortOption").value;
+    }
 
-@*<p>
-        @Html.ActionLink("Create New", "Create")
-    </p>*@
+    $(function () {
+        // Register for the change event of the drop down
+        $('#ddlSearchBy').change(function () {
+            var SearchBy = document.getElementById("ddlSearchBy");
 
-<script src="@Url.Content("~/Scripts/app-index.js")" language="javascript" type="text/javascript"></script>
-<div class="containerBig">
-    <div class="containerInner">
-        <div class="containerTitleMenu containerTitleMenuActive" id="menu1" onclick="story.toggleSection(1);">
-            <div class="containerTitleText">Latest Stories</div>
-        </div>
-        <div class="containerTitleMenu" id="menu2" onclick="story.toggleSection(2);">
-            <div class="containerTitleText">Most Likes</div>
-        </div>
-        <div class="containerTitleMenu" id="menu3" onclick="story.toggleSection(3);">
-            <div class="containerTitleText">Most Read</div>
-        </div>
-        <div style="clear:both;"></div>
-        <div class="containerStory" id="section1">
-            @if (Model == null || Model.Count() == 0)
-            {
-                <br /><br /><br />
-                <div class="storyText">Please <a href="stories">click here</a> and be the first to post a story.</div>
-                <br /><br /><br />
+            if (SearchBy.value == "0") {
+                //Hide category dropdown
+                ddlSearchByCategories.style.display = "none";
+                //Hide search textbox
+                txtSearchBy.style.display = "none";
             }
-            else
-            {
-                foreach (var item in Model)
-                {
-                    <div class="storyTitle">@Html.ActionLink(item.Title, "ViewPost", new { id = item.ID })</div>
-                    <div class="storyText">@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.Post.ToString(), 150))</div>
-                }
+            if (SearchBy.value == "1") {
+                //Show category dropdown
+                ddlSearchByCategories.style.display = "block";
+                //Hide search textboxea
+                txtSearchBy.style.display = "none";
             }
-        </div>
-        <div class="containerStory" id="section2" style="display:none;">
-            @if (topRatedPosts == null || topRatedPosts.Count() == 0)
-            {
-                <br /><br /><br />
-                <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to like a story.</div>
-                <br /><br /><br />
+            if (SearchBy.value == "2") {
+                //Hide category dropdown
+                ddlSearchByCategories.style.display = "none";
+                //Show search textbox
+                txtSearchBy.style.display = "block";
             }
-            else
-            {
-                foreach (var item in topRatedPosts)
-                {
-                    <div class="storyTitle">@Html.ActionLink(item.post.Title, "ViewPost", new { id = item.post.ID }) <span style="color:Black; font-weight:normal; font-style:italic;">(@Html.Raw(item.numberLikes.ToString()) likes)</span></div>
-                    <div class="storyText">@Html.Raw(@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.post.Post.ToString(), 60)))</div>
-                }
-            }
-        </div>
-        <div class="containerStory" id="section3" style="display:none;">
-            @if (popularPosts == null || popularPosts.Count() == 0)
-            {
-                <br /><br /><br />
-                <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to read a story.</div>
-                <br /><br /><br />
-            }
-            else
-            {
-                foreach (var item in popularPosts)
-                {
-                    <div class="storyTitle">@Html.ActionLink(item.post.Title, "ViewPost", new { id = item.post.ID }) <span style="color:Black; font-weight:normal; font-style:italic;">(@Html.Raw(item.numberReadings.ToString()) read)</span></div>
-                    <div class="storyText">@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.post.Post.ToString(), 60))</div>
-                }
-            }
-        </div>
-    </div>
-</div>
+        });
+    });
+</script>
 
-@*<div class="containerBig">
-    <div class="containerInner">
-        <div class="containerTitle">
-            <div class="containerTitleText">Latest Stories</div>
+<!--
+Categories?
+How to keep eveything selected after searching or sorting
+Changing pages or view all does not send sort or search options, should I save previously to some sessions?
+Caching... want to create a service that would run every 10 minutes and refresh caching.
+-->
+@using (Html.BeginForm("index", "Home", FormMethod.Get))
+{
+    <!-- START: Sorting + Paging -->
+    <div class="sort">
+        <div class="search">
+            <div class="searchInput" id="txtSearchBy">@Html.TextBoxFor(model => model.SearchText, new { id = "SearchText", @class = "SearchText" })</div>
+            <div class="searchButton"><input type="image" src="@Url.Content("~/content/images/buttonSearch.png")" style="width:24px; height:24px;" /></div>
         </div>
-        <div style="clear:both;"></div>
-        <div class="containerStory">
-            @if (Model == null || Model.Count() == 0)
-            {
-                <div class="storyText">Please <a href="stories">click here</a> and be the first to post a story.</div>
-            }
-            else
-            {
-                foreach (var item in Model)
+        <div class="sortInner">
+            <div class="pagingLeft">
+                Sort By:
+                @Html.DropDownListFor(model => model.SortOption, new SelectList(Model.SortOptions, "Value", "Text", Model.SortOption), new { onchange = "submit();" })
+            </div>
+            <div class="pagingRight">
+                @foreach (string page in Model.PageNoList)
                 {
-                    <div class="storyTitle">@Html.ActionLink(item.Title, "ViewPost", new { id = item.ID })</div>
-                    <div class="storyText">@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.Post.ToString(), 150))</div>
+                    if (page == Model.currentPage)
+                    {
+                        <div style="float:left; padding-top:2px;">
+                            &nbsp;&nbsp;Page:&nbsp;
+                            @page <span>of</span> @Model.PageNoList.Count()
+                            <span>&nbsp;</span>
+                        </div>
+
+                        <div style="float:left">
+                            <!--Show the back arrow to go to previous page-->
+                            @if (Convert.ToInt32(page) != 1)
+                            {
+                                var pageNo = Convert.ToInt32(page) - 1;
+                                <a href="javascript:window.location.href=GetHref(@pageNo);" class="pageLeft"></a>
+                                //@Html.ActionLink("<", "stories", new { PageNumber = Convert.ToInt32(page) - 1 }, new { @class = "pageLeft" })
+                            }
+                            else
+                            {
+                                <div class="pageLeftD"></div>
+                            }
+                            <div style="float:left">&nbsp;</div>
+                            <!--Show the forward arrow to go to next page-->
+                            @if (Convert.ToInt32(page) < @Model.PageNoList.Count())
+                            {
+                                var pageNo = Convert.ToInt32(page) + 1;
+                                <a href="javascript:window.location.href=GetHref(@pageNo);" class="pageRight"></a>
+                                //@Html.ActionLink(">", "stories", new { PageNumber = Convert.ToInt32(page) + 1 }, new { @class = "pageRight" })
+                            }
+                            else
+                            {
+                                <div class="pageRightD"></div>
+                            }
+                        </div>
+                    }
                 }
+            </div>
+        </div>
+    </div>
+    <!-- END: Sorting + Paging -->
+
+    <div style="clear:both; height:10px;"></div>
+
+    <div class="containerBig">
+        <div class="containerInner">
+            @foreach (var item in Model.Stories)
+            {
+                <div class="containerTitle">
+                    <div class="containerTitleText">@Html.Raw(item.Title)</div>
+                    <div class="containerTitleSubText isDesktop">by @Html.ActionLink(item.Name.ToString(), "Index", new { u = item.UserId.ToString() })</div>
+                </div>
+                <div style="clear:both;"></div>
+                <div class="containerStory">
+                    <div class="storyTitle"></div>
+                    <div class="storyText">
+                        @Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.Post.ToString(), 150))
+                    </div>
+
+                    <div class="containerBottomLeft">
+                        (<span style="color:blue">
+                            <a href="stories/@Html.Raw(item.ID)">Read More</a>
+                        </span>)
+                    </div>
+                    <div class="isMobile">by @Html.ActionLink(item.Name.ToString(), "Index", new { u = item.UserId.ToString() })</div>
+                    <div class="containerBottomRight">
+                        <b>Created Date:</b> @Html.Raw(item.CreateDate.ToString("MMMM dd, yyyy"))<span class="isDesktop">&nbsp;|&nbsp;</span><span class="isMobile"><br /></span><b>Likes:</b> @Html.Raw(item.Likes.ToString())
+                    </div>
+                    <div style="clear:both;"></div>
+                </div>
+                <div style="clear:both; height:10px;"></div>
             }
         </div>
     </div>
-</div>
-<div class="containerSmall">
-    <div class="containerInner">
-        <div class="containerTitle">
-            <div class="imgThumb">&nbsp;</div>
-            <div class="containerTitleText">Most Likes</div>
-        </div>
-        <div style="clear:both;"></div>
-        <div class="containerStorySmall">
-            @if (topRatedPosts == null || topRatedPosts.Count() == 0)
+
+    <!-- START: PAGING BOTTOM -->
+    <div style="clear:both; height:10px;"></div>
+    <div style="text-align:center;">
+        Page:&nbsp;&nbsp;
+        @foreach (string page in Model.PageNoList)
+        {
+            if (page != Model.currentPage)
             {
-                <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to like a story.</div>
+                <a href="javascript:window.location.href=GetHref(@page);">@page</a>
+                //@Html.ActionLink(@page, "stories", new { PageNumber = @page })
             }
             else
             {
-                foreach (var item in topRatedPosts)
-                {
-                    <div class="storyTitle">@Html.ActionLink(item.post.Title, "ViewPost", new { id = item.post.ID }) <span style="color:Black; font-weight:normal; font-style:italic;">(@Html.Raw(item.numberLikes.ToString()) likes)</span></div>
-                    <div class="storyText">@Html.Raw(@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.post.Post.ToString(), 60)))</div>
-                }
+                @page
             }
-        </div>
+            <span>&nbsp;</span>
+        }
     </div>
-</div>
-<div class="containerSeparater">&nbsp;</div>
-<div class="containerSmall">
-    <div class="containerInner">
-        <div class="containerTitle">
-            <div class="imgBooks">&nbsp;</div>
-            <div class="containerTitleText">Most Read</div>
-        </div>
-        <div style="clear:both;"></div>
-        <div class="containerStorySmall">
-            @if (popularPosts == null || popularPosts.Count() == 0)
-            {
-                <div class="storyText">Please <a href="stories">click here</a> to view stories and be the first to read a story.</div>
-            }
-            else
-            {
-                foreach (var item in popularPosts)
-                {
-                    <div class="storyTitle">@Html.ActionLink(item.post.Title, "ViewPost", new { id = item.post.ID }) <span style="color:Black; font-weight:normal; font-style:italic;">(@Html.Raw(item.numberReadings.ToString()) read)</span></div>
-                    <div class="storyText">@Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(item.post.Post.ToString(), 60))</div>
-                }
-            }
-        </div>
-    </div>
-</div>*@
+    <div style="clear:both; height:10px;"></div>
+    <!-- END: PAGING BOTTOM -->
+
+}

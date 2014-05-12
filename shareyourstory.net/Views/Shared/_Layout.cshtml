@@ -29,7 +29,7 @@
             <div class="topMenuBar">
                 <div class="topMenuBarLeft">
                     <div>@Html.ActionLink("Home", "Index", "Home", null, new { @class = "topMenuItem" })</div>
-                    <div>@Html.ActionLink("Read a Story", "Index", "stories", null, new { @class = "topMenuItem" })</div>
+                    @*<div>@Html.ActionLink("Read a Story", "Index", "stories", null, new { @class = "topMenuItem" })</div>*@
                     <div>@Html.ActionLink("Your Stories", "Index", "Member", null, new { @class = "topMenuItem" })</div>
                     <div>@Html.ActionLink("Contact Us", "Contact", "Home", null, new { @class = "topMenuItem" })</div>
                     <div class="clear"></div>
@@ -50,6 +50,7 @@
             </div>
         </div>
     </div>
+    <div class="clear"></div>
     <div class="mainContainer">
         <div class="mainLeft">
             @Html.Partial("_errorLabel")

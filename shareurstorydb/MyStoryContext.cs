@@ -31,8 +31,8 @@ namespace shareurstorydb
         public DbSet<OAuthMembership> OAuthMemberships { get; set; }
     }
 
-    //public class CreateDb : DropCreateDatabaseIfModelChanges<MyStoryContext>
-    public class CreateDb : DropCreateDatabaseAlways<MyStoryContext>
+    public class CreateDb : DropCreateDatabaseIfModelChanges<MyStoryContext>
+    //public class CreateDb : DropCreateDatabaseAlways<MyStoryContext>
     {
         protected override void Seed(MyStoryContext context)
         {
