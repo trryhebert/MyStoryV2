@@ -280,38 +280,11 @@ namespace shareyourstory.net.Controllers
             StoriesListModel retStories = new StoriesListModel();
             stories.SortOption = sortOption;
             stories.SearchText = searchText;
-            
-            ////Get minutes difference between now and last update
-            //TimeSpan span = new TimeSpan();
-            //if (HttpContext.Cache["LastUpdate"] != null)
-            //{
-            //    DateTime startTime = Convert.ToDateTime(HttpContext.Cache["LastUpdate"]);
-            //    DateTime endTime = DateTime.Now;
-            //    span = endTime.Subtract(startTime);
-            //}
 
-            ////If cache is empty or cache is older than 2 hours, then remove cache and populate new stories
-            //if (this.HttpContext.Cache["Stories"] == null || this.HttpContext.Cache["LastUpdate"] == null || span.Minutes > Convert.ToInt32(ConfigurationManager.AppSettings["CacheMinutes"]) || ((List<StoriesDTO>)this.HttpContext.Cache["Stories"]).Count == 0)
-            //{
-            //    this.HttpContext.Cache.Remove("LastUpdate");
-            //    this.HttpContext.Cache.Insert("LastUpdate", DateTime.Now);
 
-            //    this.HttpContext.Cache.Remove("Stories");
-
-                //Get All Stories
-                List<StoriesDTO> storiesDTO = Helpers.ControllerHelpers.GetStories(DbContext);
-                stories.Stories = storiesDTO;
-
-                ////Need to create a list that will not be modified
-                //StoriesListModel storiesCache = new StoriesListModel();
-                //storiesCache.Stories = new List<StoriesDTO>();
-                //storiesCache.Stories = stories.Stories.ToList();
-
-            //    this.HttpContext.Cache.Insert("Stories", storiesCache.Stories);
-            //}
-            //else
-            //    stories.Stories = (List<StoriesDTO>)this.HttpContext.Cache["Stories"];
-
+            //Get All Stories
+            List<StoriesDTO> storiesDTO = Helpers.ControllerHelpers.GetStories(DbContext, userID);
+            stories.Stories = storiesDTO;
             retStories = stories;
             if (userID > 0)
                 retStories.Stories = (from s in stories.Stories
@@ -518,5 +491,153 @@ namespace shareyourstory.net.Controllers
             Response.Write("<script langauge='javascript'>alert('" + displaymessage + "');</script>");
             return View();
         }
+
+        public ActionResult stories()//FormCollection collection)
+        {
+            string sortOption = Request.QueryString["SortOption"];
+            string searchText = Request.QueryString["SearchText"];
+            int userId = 0;
+            if (int.TryParse(Request.QueryString["u"], out userId) == false)
+                userId = 0;
+            StoriesListModel stories = new StoriesListModel();
+            try
+            {
+                // Initialize the cache and retrieve stories.
+                stories = doMemoryAndGetStories(sortOption, searchText, userId);
+                stories.PageNoList = new List<string>();
+                //Initialize the stories properties
+                PopulateDDL(stories);
+                //Do Searching
+                Searching(stories, searchText);//collection);
+                //Do Sorting
+                Sorting(stories, sortOption);//collection);
+                //Do Paging
+                Paging(stories);
+
+                return View(stories);
+            }
+            catch (Exception ex)
+            {
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                ViewData["ErrorMsg"] = failMessage;
+                ControllerContext.RequestContext.HttpContext.Trace.Write(ex.ToString());
+                return View(stories);
+            }
+        }
+        [HttpGet]
+        public string Follow()
+        {
+            string retValue = "success";
+            try
+            {
+                int followedUserId = 0;
+                UserProfile user = (UserProfile)Session["User"];
+                if (int.TryParse(Request.RawUrl.Split('/')[3], out followedUserId) == false)
+                    throw new Exception("Followed user identifier could not be found.");
+                DbContext.UserFollows.Add(new UserFollow()
+                {
+                    FollowedUserId = followedUserId,
+                    UserId = user.UserId,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
+                });
+
+                DbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                retValue = "fail";
+            }
+            return retValue;
+        }
+        [HttpGet]
+        public string Favorite()
+        {
+
+            string retValue = "success";
+            try
+            {
+                int storyId = 0;
+                UserProfile user = (UserProfile)Session["User"];
+                if (int.TryParse(Request.RawUrl.Split('/')[3], out storyId) == false)
+                    throw new Exception("Favorite story identifier could not be found.");
+                DbContext.UserFavorites.Add(new UserFavorite()
+                {
+                    StoryId = storyId,
+                    UserId = user.UserId,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now,
+                });
+
+                DbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                retValue = "fail";
+            }
+            return retValue;
+        }
+        [HttpGet]
+        public string FollowDel()
+        {
+            string retValue = "success";
+            try
+            {
+                int followedUserId = 0;
+                UserProfile user = (UserProfile)Session["User"];
+                if (int.TryParse(Request.RawUrl.Split('/')[3], out followedUserId) == false)
+                    throw new Exception("Followed user identifier could not be found.");
+                var follow = (from f in DbContext.UserFollows
+                              where f.FollowedUserId == followedUserId
+                                 && f.UserId == user.UserId
+                              select f).FirstOrDefault<UserFollow>();
+                if (follow == null)
+                    throw new Exception("Follow instance could not be found.");
+                DbContext.UserFollows.Remove(follow);
+
+                DbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                retValue = "fail";
+            }
+            return retValue;
+
+        }
+        [HttpGet]
+        public string FavoriteDel()
+        {
+            string retValue = "success";
+            try
+            {
+                int storyId = 0;
+                UserProfile user = (UserProfile)Session["User"];
+                if (int.TryParse(Request.RawUrl.Split('/')[3], out storyId) == false)
+                    throw new Exception("Favorite story identifier could not be found.");
+                var fave = (from f in DbContext.UserFavorites
+                            where f.StoryId == storyId
+                               && f.UserId == user.UserId
+                            select f).FirstOrDefault<UserFavorite>();
+                if (fave == null)
+                    throw new Exception("Favorite instance could not be found.");
+                DbContext.UserFavorites.Remove(fave);
+
+                DbContext.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                retValue = "fail";
+            }
+            return retValue;
+        }
+
     }
 }

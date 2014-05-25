@@ -62,7 +62,7 @@ namespace shareyourstory.net.Controllers.Helpers
             return topposts;
         }
 
-        public static List<StoriesDTO> GetStories(MyStoryContext context, int userId)
+        public static List<StoriesDTO> GetStories(MyStoryContext context, int userId = 0)
         {
             return (from p in context.UserPosts
                     //where usrs.LastActivityDate <= duration 

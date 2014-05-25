@@ -169,7 +169,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
-    <Compile Include="Controllers\HomeController_OLD.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\Helpers\ControllerHelpers.cs" />
     <Compile Include="Controllers\Helpers\SanitizeHtml.cs" />
