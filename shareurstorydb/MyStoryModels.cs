@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
 
 namespace shareurstorydb
 {
@@ -135,6 +138,56 @@ namespace shareurstorydb
         public IEnumerable<SelectListItem> SortOptions { get; set; }
         public string SortOption { get; set; }
         public List<CommentsDTO> Comments { get; set; }
+        public int UserId { get; set; }
+        public int SearchUserId { get; set; }
+        public int SkipRows { get; set; }
+        public int TakeRows { get; set; }
+        public int TotalCount { get; set; }
+
+        public StoriesListModel GetStories()
+        {
+            this.Stories = new List<StoriesDTO>();
+
+            string connString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+
+            DataSet ds = new DataSet();
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                SqlCommand cmd = new SqlCommand("Stories_Get", conn);
+                cmd.Parameters.Add(new SqlParameter("SearchTerm", SqlDbType.VarChar) { Value = this.SearchText });
+                cmd.Parameters.Add(new SqlParameter("SearchUserId", SqlDbType.BigInt) { Value = this.SearchUserId });
+                cmd.Parameters.Add(new SqlParameter("UserId", SqlDbType.BigInt) { Value = this.UserId });
+                cmd.Parameters.Add(new SqlParameter("Filter", SqlDbType.BigInt) { Value = this.SortOption });
+                cmd.Parameters.Add(new SqlParameter("SkipRows", SqlDbType.BigInt) { Value = this.SkipRows });
+                cmd.Parameters.Add(new SqlParameter("TakeRows", SqlDbType.BigInt) { Value = this.TakeRows });
+
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                SqlDataAdapter da = new SqlDataAdapter();
+                da.SelectCommand = cmd;
+
+                da.Fill(ds);
+                this.TotalCount = Convert.ToInt32(ds.Tables[0].Rows[0][0]);
+
+                foreach (var row in ds.Tables[1].AsEnumerable())
+                {
+                    StoriesDTO story = new StoriesDTO
+                    {
+                        ID = Convert.ToInt32(row["ID"]),
+                        UserId = Convert.ToInt32(row["UserId"]),
+                        Title = row["Title"].ToString(),
+                        Post = row["Post"].ToString(),
+                        Name = row["Name"].ToString(),
+                        Likes = Convert.ToInt32(row["Likes"]),
+                        CreateDate = Convert.ToDateTime(row["CreateDate"])
+                    };
+
+                    this.Stories.Add(story);
+                }
+            }
+
+            return this;
+        }
     }
     public class UserStoryListModel
     {

@@ -11,88 +11,39 @@ using System.Web.Services;
 
 namespace shareyourstory.net.Controllers
 {
-    public class HomeController : BaseController
+    public class HomeController_OLD : BaseController
     {
         //Initialize Paging
         int PageCount = 10;
+        int PageNumber = 1;
         string failMessage = "";
         //
         // GET: /Index/
 
-        public HomeController()
+        public HomeController_OLD()
             : base()
         {
             //Set the page size
             if (System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"] != null)
                 if (int.TryParse(System.Configuration.ConfigurationManager.AppSettings["DefaultPageSize"], out PageCount) == false)
-                    PageCount = 10;
+                    PageNumber = 10;
         }
-
         public ActionResult Index()
         {
-            StoriesListModel stories = new StoriesListModel();
-            stories.SortOption = Request.QueryString["SortOption"];
-            stories.SearchText = Request.QueryString["SearchText"];
-            int userId = 0;
-            if (int.TryParse(Request.QueryString["u"], out userId) == false)
-                userId = 0;
-            stories.SearchUserId = userId;
-            stories.TakeRows = PageCount;
-
+            
             try
             {
-                UserProfile user = (UserProfile)Session["User"];
-                stories.UserId = user.UserId;
-            }
-            catch (Exception)
-            {
-            }
-
-            try
-            {
-                //Calculate Paging
-                if (Request.QueryString["PageNumber"] != "" && Request.QueryString["PageNumber"] != null)
-                    stories.currentPage = Request.QueryString["PageNumber"];
-                else
-                    stories.currentPage = "1";
-
-                if (Convert.ToInt32(stories.currentPage) - 1 > 0)
-                    stories.SkipRows = (Convert.ToInt32(stories.currentPage) - 1) * PageCount;
-                else
-                    stories.SkipRows = 0;
-
-                PopulateDDL(stories);
-                stories.GetStories();
-
-                // Initialize the cache and retrieve stories.
-                //stories = doMemoryAndGetStories(sortOption, searchText, userId);
-                
-                //Calculate how many pages.
-                stories.PageNoList = new List<string>();
-                int pages = Convert.ToInt32(Math.Ceiling((double)stories.TotalCount / (double)PageCount));
-                for (int i = 1; i <= pages; i++) //Get number of pages
-                {
-                    stories.PageNoList.Add(i.ToString());
-                }
-
-                //Initialize the stories properties
-                PopulateDDL(stories);
-                ////Do Searching
-                //Searching(stories, searchText);//collection);
-                ////Do Sorting
-                //Sorting(stories, sortOption);//collection);
-                ////Do Paging
-                //Paging(stories);
-
-                return View(stories);
+                var latestPosts = Helpers.ControllerHelpers.GetLatestTopXUserPosts(3, DbContext);
+                ViewBag.PopularPosts = ControllerHelpers.GetPopularTopXUserPosts(3, DbContext);
+                ViewBag.TopRatedPosts = ControllerHelpers.GetTopRatedTopXUserPosts(3, DbContext);
+                return View(latestPosts);
             }
             catch (Exception ex)
             {
                 ControllerHelpers.LogError(DbContext, ex, out failMessage);
                 ViewData["ErrorMsg"] = failMessage;
-                ControllerContext.RequestContext.HttpContext.Trace.Write(ex.ToString());
-                return View(stories);
             }
+            return View();
         }
 
         public ActionResult ViewPost(int id)
@@ -307,6 +258,39 @@ namespace shareyourstory.net.Controllers
         }
 
         #region Stories
+        public ActionResult stories()//FormCollection collection)
+        {
+            string sortOption = Request.QueryString["SortOption"];
+            string searchText = Request.QueryString["SearchText"];
+            int userId = 0;
+            if (int.TryParse(Request.QueryString["u"], out userId) == false)
+                userId = 0;
+            StoriesListModel stories = new StoriesListModel();
+            try
+            {
+                // Initialize the cache and retrieve stories.
+                stories = doMemoryAndGetStories(sortOption, searchText, userId);
+                stories.PageNoList = new List<string>();
+                //Initialize the stories properties
+                PopulateDDL(stories);
+                //Do Searching
+                Searching(stories, searchText);//collection);
+                //Do Sorting
+                Sorting(stories, sortOption);//collection);
+                //Do Paging
+                Paging(stories);
+
+                return View(stories);
+            }
+            catch (Exception ex)
+            {
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                ViewData["ErrorMsg"] = failMessage;
+                ControllerContext.RequestContext.HttpContext.Trace.Write(ex.ToString());
+                return View(stories);
+            }
+        }
+
         private StoriesListModel doMemoryAndGetStories(string sortOption, string searchText, int userID = 0)
         {
             StoriesListModel stories = new StoriesListModel();
@@ -363,14 +347,9 @@ namespace shareyourstory.net.Controllers
                 };
 
             stories.SortOptions = new[] {
-                    //new SelectListItem { Value = "0", Text = "Most Recent" },
-                    //new SelectListItem { Value = "1", Text = "Most Likes" },
-                    //new SelectListItem { Value = "2", Text = "Alphabetical" }
                     new SelectListItem { Value = "0", Text = "Most Recent" },
-                    new SelectListItem { Value = "1", Text = "Most Likes" },
-                    new SelectListItem { Value = "2", Text = "Most Read" },
-                    new SelectListItem { Value = "3", Text = "My Follows" },
-                    new SelectListItem { Value = "4", Text = "My Favorites" }
+                    new SelectListItem { Value = "1", Text = "Alphabetical" },
+                    new SelectListItem { Value = "2", Text = "Most Likes" }
                 };
 
             stories.SearchCategories = new[] {
@@ -383,81 +362,81 @@ namespace shareyourstory.net.Controllers
         }
 
 
-        //private StoriesListModel Searching(StoriesListModel stories, string searchText)//FormCollection collection)
-        //{
-        //    try
-        //    {
-        //        if (searchText != null && searchText != "")
-        //            stories.Stories = stories.Stories.Where(s1 => (s1.Name.ToLower().Contains(searchText.ToLower()) || s1.Title.ToLower().Contains(searchText.ToLower()))).ToList();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ControllerHelpers.LogError(DbContext, ex, out failMessage);
-        //        ViewData["ErrorMsg"] = failMessage;
-        //    }
+        private StoriesListModel Searching(StoriesListModel stories, string searchText)//FormCollection collection)
+        {
+            try
+            {
+                if (searchText != null && searchText != "")
+                    stories.Stories = stories.Stories.Where(s1 => (s1.Name.ToLower().Contains(searchText.ToLower()) || s1.Title.ToLower().Contains(searchText.ToLower()))).ToList();
+            }
+            catch (Exception ex)
+            {
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                ViewData["ErrorMsg"] = failMessage;
+            }
 
-        //    return stories;
-        //}
+            return stories;
+        }
 
-        //private StoriesListModel Sorting(StoriesListModel stories, string sortOption)//FormCollection collection)
-        //{
+        private StoriesListModel Sorting(StoriesListModel stories, string sortOption)//FormCollection collection)
+        {
 
-        //    try
-        //    {
-        //        //string SortOption = "";
-        //        //SortOption = collection.GetValue("SortOptions").AttemptedValue;
+            try
+            {
+                //string SortOption = "";
+                //SortOption = collection.GetValue("SortOptions").AttemptedValue;
 
-        //        if (sortOption == "0")
-        //            stories.Stories = stories.Stories.OrderByDescending(s => s.CreateDate).ToList();
-        //        else if (sortOption == "1")
-        //            stories.Stories = stories.Stories.OrderBy(s => s.Name).ToList();
-        //        else if (sortOption == "2")
-        //            stories.Stories = stories.Stories.OrderByDescending(s => s.Likes).ToList();
-        //        else
-        //            stories.Stories = stories.Stories.OrderByDescending(s => s.CreateDate).ToList();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ControllerHelpers.LogError(DbContext, ex, out failMessage);
-        //    }
+                if (sortOption == "0")
+                    stories.Stories = stories.Stories.OrderByDescending(s => s.CreateDate).ToList();
+                else if (sortOption == "1")
+                    stories.Stories = stories.Stories.OrderBy(s => s.Name).ToList();
+                else if (sortOption == "2")
+                    stories.Stories = stories.Stories.OrderByDescending(s => s.Likes).ToList();
+                else
+                    stories.Stories = stories.Stories.OrderByDescending(s => s.CreateDate).ToList();
+            }
+            catch (Exception ex)
+            {
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+            }
 
-        //    return stories;
-        //}
+            return stories;
+        }
 
-        //private StoriesListModel Paging(StoriesListModel stories)
-        //{
-        //    try
-        //    {
-        //        if (Request.QueryString["PageNumber"] != "" && Request.QueryString["PageNumber"] != null)
-        //            PageNumber = Convert.ToInt32(Request.QueryString["PageNumber"]);
+        private StoriesListModel Paging(StoriesListModel stories)
+        {
+            try
+            {
+                if (Request.QueryString["PageNumber"] != "" && Request.QueryString["PageNumber"] != null)
+                    PageNumber = Convert.ToInt32(Request.QueryString["PageNumber"]);
 
 
-        //        if (PageNumber != 0)
-        //        {
-        //            int pages = Convert.ToInt32(Math.Ceiling((double)stories.Stories.Count / (double)PageCount));
-        //            for (int i = 1; i <= pages; i++) //Get number of pages
-        //            {
-        //                stories.PageNoList.Add(i.ToString());
-        //            }
-        //            if (stories.Stories.Skip(PageCount * (PageNumber - 1)).Take(PageCount).ToList().Count > 0)
-        //            {
-        //                stories.Stories = stories.Stories.Skip(PageCount * (PageNumber - 1)).Take(PageCount).ToList();
-        //                stories.currentPage = PageNumber.ToString();
-        //            }
-        //            else
-        //            {
-        //                stories.Stories = stories.Stories.Skip(0).Take(PageCount).ToList();
-        //                stories.currentPage = "1";
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ControllerHelpers.LogError(DbContext, ex, out failMessage);
-        //        ViewData["ErrorMsg"] = failMessage;
-        //    }
-        //    return stories;
-        //}
+                if (PageNumber != 0)
+                {
+                    int pages = Convert.ToInt32(Math.Ceiling((double)stories.Stories.Count / (double)PageCount));
+                    for (int i = 1; i <= pages; i++) //Get number of pages
+                    {
+                        stories.PageNoList.Add(i.ToString());
+                    }
+                    if (stories.Stories.Skip(PageCount * (PageNumber - 1)).Take(PageCount).ToList().Count > 0)
+                    {
+                        stories.Stories = stories.Stories.Skip(PageCount * (PageNumber - 1)).Take(PageCount).ToList();
+                        stories.currentPage = PageNumber.ToString();
+                    }
+                    else
+                    {
+                        stories.Stories = stories.Stories.Skip(0).Take(PageCount).ToList();
+                        stories.currentPage = "1";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                ViewData["ErrorMsg"] = failMessage;
+            }
+            return stories;
+        }
 
 
         //Should we request them to login, if so then should I maybe implement a popup with Facebook login (Popup saying: Please login using Facebook: then have the Facebook login like in the right menu)?
