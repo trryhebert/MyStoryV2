@@ -322,8 +322,8 @@ namespace shareyourstory.net.Controllers
                     new SelectListItem { Value = "0", Text = "Most Recent" },
                     new SelectListItem { Value = "1", Text = "Most Likes" },
                     new SelectListItem { Value = "2", Text = "Most Read" },
-                    new SelectListItem { Value = "3", Text = "My Follows" },
-                    new SelectListItem { Value = "4", Text = "My Favorites" }
+                    new SelectListItem { Value = "3", Text = "My Favorites" },
+                    new SelectListItem { Value = "4", Text = "My Follows" }
                 };
 
             stories.SearchCategories = new[] {
