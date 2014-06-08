@@ -315,7 +315,9 @@ namespace shareyourstory.net.Controllers
                     new SelectListItem { Value = "2", Text = "Story Name" }
                 };
 
-            stories.SortOptions = new[] {
+            if (Session["User"] != null)
+            {
+                stories.SortOptions = new[] {
                     //new SelectListItem { Value = "0", Text = "Most Recent" },
                     //new SelectListItem { Value = "1", Text = "Most Likes" },
                     //new SelectListItem { Value = "2", Text = "Alphabetical" }
@@ -325,6 +327,15 @@ namespace shareyourstory.net.Controllers
                     new SelectListItem { Value = "3", Text = "My Favorites" },
                     new SelectListItem { Value = "4", Text = "My Follows" }
                 };
+            }
+            else
+            {
+                stories.SortOptions = new[] {
+                    new SelectListItem { Value = "0", Text = "Most Recent" },
+                    new SelectListItem { Value = "1", Text = "Most Likes" },
+                    new SelectListItem { Value = "2", Text = "Most Read" }
+                };
+            }
 
             stories.SearchCategories = new[] {
                     new SelectListItem { Value = "0", Text = "All Categories" },
