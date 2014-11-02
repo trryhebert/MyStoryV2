@@ -238,6 +238,8 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <None Include="Properties\PublishProfiles\mystory - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\mystory - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\app-contact.js" />
     <Content Include="Scripts\app-viewpost.js" />
