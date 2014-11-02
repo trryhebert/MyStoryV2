@@ -35,7 +35,7 @@
                     <div class="clear"></div>
                 </div>
                 <div class="topMenuBarRight">
-                    @using (Html.BeginForm("stories", "Home", FormMethod.Get))
+                    @*@using (Html.BeginForm("stories", "Home", FormMethod.Get))
                     {
                         <div class="searchButtonTop">
                             <input type="image" src="@Url.Content("~/content/images/buttonSearch.png")" style="width:28px; height:28px;" onsubmit="submit-form();" />
@@ -44,7 +44,7 @@
                             @Html.TextBox("SearchText", "", new { id = "SearchText", style = "width:90%" })
                         </div>
                         <div class="clear"></div>
-                    }
+                    }*@
                 </div>
                 <div class="clear"></div>
             </div>
