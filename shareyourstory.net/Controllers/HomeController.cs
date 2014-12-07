@@ -38,11 +38,18 @@ namespace shareyourstory.net.Controllers
                 userId = 0;
             stories.SearchUserId = userId;
             stories.TakeRows = PageCount;
+
             try
             {
                 UserProfile user = (UserProfile)Session["User"];
-                if (user != null)
-                    stories.UserId = user.UserId;
+                stories.UserId = user.UserId;
+            }
+            catch (Exception)
+            {
+            }
+
+            try
+            {
                 //Calculate Paging
                 if (Request.QueryString["PageNumber"] != "" && Request.QueryString["PageNumber"] != null)
                     stories.currentPage = Request.QueryString["PageNumber"];
