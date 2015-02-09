@@ -220,6 +220,27 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\CSSReset.css" />
+    <Content Include="Content\images\adsense.jpg" />
+    <Content Include="Content\images\amazon.jpg" />
+    <Content Include="Content\images\arrowLeft.png" />
+    <Content Include="Content\images\arrowLeftD.png" />
+    <Content Include="Content\images\arrowLeftDLG.png" />
+    <Content Include="Content\images\arrowLeftLG.png" />
+    <Content Include="Content\images\arrowRight.png" />
+    <Content Include="Content\images\arrowRightD.png" />
+    <Content Include="Content\images\arrowRightDLG.png" />
+    <Content Include="Content\images\arrowRightLG.png" />
+    <Content Include="Content\images\bg.png" />
+    <Content Include="Content\images\bg1.png" />
+    <Content Include="Content\images\bg2.png" />
+    <Content Include="Content\images\bg3.png" />
+    <Content Include="Content\images\booksGreen.jpg" />
+    <Content Include="Content\images\buttonSearch.png" />
+    <Content Include="Content\images\favicon.ico" />
+    <Content Include="Content\images\fbshare_bg.jpg" />
+    <Content Include="Content\images\logoGreen.jpg" />
+    <Content Include="Content\images\starGreen.jpg" />
+    <Content Include="Content\images\thumbGreen.jpg" />
     <Content Include="Content\index.aspx" />
     <Content Include="Content\index.html" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -278,6 +299,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Content\images\Thumbs.db" />
     <None Include="Properties\PublishProfiles\ftp-publish.pubxml" />
     <None Include="Properties\PublishProfiles\shareyourstory - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\shareyourstory - Web Deploy.pubxml" />
@@ -355,7 +377,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\images\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
