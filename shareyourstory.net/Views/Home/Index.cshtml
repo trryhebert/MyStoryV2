@@ -47,7 +47,7 @@ Caching... want to create a service that would run every 10 minutes and refresh 
     <div class="sort">
         <div class="search">
             <div class="searchInput" id="txtSearchBy">@Html.TextBoxFor(model => model.SearchText, new { id = "SearchText", @class = "SearchText" })</div>
-            <div class="searchButton"><input type="image" src="@Url.Content("~/content/images/buttonSearch.png")" style="width:24px; height:24px;" /></div>
+            <div class="searchButton"><input type="image" src="@Url.Content("~/Content/images/buttonSearch.png")" style="width:24px; height:24px;" /></div>
         </div>
         <div class="sortInner">
             <div class="pagingLeft">
@@ -55,41 +55,45 @@ Caching... want to create a service that would run every 10 minutes and refresh 
                 @Html.DropDownListFor(model => model.SortOption, new SelectList(Model.SortOptions, "Value", "Text", Model.SortOption), new { onchange = "submit();" })
             </div>
             <div class="pagingRight">
-                @foreach (string page in Model.PageNoList)
-                {
-                    if (page == Model.currentPage)
-                    {
-                        <div style="float:left; padding-top:2px;">
-                            &nbsp;&nbsp;Page:&nbsp;
-                            @page <span>of</span> @Model.PageNoList.Count()
-                            <span>&nbsp;</span>
-                        </div>
 
-                        <div style="float:left">
-                            <!--Show the back arrow to go to previous page-->
-                            @if (Convert.ToInt32(page) != 1)
-                            {
-                                var pageNo = Convert.ToInt32(page) - 1;
-                                <a href="javascript:window.location.href=GetHref(@pageNo);" class="pageLeft"></a>
-                                //@Html.ActionLink("<", "stories", new { PageNumber = Convert.ToInt32(page) - 1 }, new { @class = "pageLeft" })
-                            }
-                            else
-                            {
-                                <div class="pageLeftD"></div>
-                            }
-                            <div style="float:left">&nbsp;</div>
-                            <!--Show the forward arrow to go to next page-->
-                            @if (Convert.ToInt32(page) < @Model.PageNoList.Count())
-                            {
-                                var pageNo = Convert.ToInt32(page) + 1;
-                                <a href="javascript:window.location.href=GetHref(@pageNo);" class="pageRight"></a>
-                                //@Html.ActionLink(">", "stories", new { PageNumber = Convert.ToInt32(page) + 1 }, new { @class = "pageRight" })
-                            }
-                            else
-                            {
-                                <div class="pageRightD"></div>
-                            }
-                        </div>
+                @if (Model != null && Model.PageNoList != null)
+                {
+                    foreach (string page in Model.PageNoList)
+                    {
+                        if (page == Model.currentPage)
+                        {
+                            <div style="float:left; padding-top:2px;">
+                                &nbsp;&nbsp;Page:&nbsp;
+                                @page <span>of</span> @Model.PageNoList.Count()
+                                <span>&nbsp;</span>
+                            </div>
+
+                            <div style="float:left">
+                                <!--Show the back arrow to go to previous page-->
+                                @if (Convert.ToInt32(page) != 1)
+                                {
+                                    var pageNo = Convert.ToInt32(page) - 1;
+                                    <a href="javascript:window.location.href=GetHref(@pageNo);" class="pageLeft"></a>
+                                    //@Html.ActionLink("<", "stories", new { PageNumber = Convert.ToInt32(page) - 1 }, new { @class = "pageLeft" })
+                                }
+                                else
+                                {
+                                    <div class="pageLeftD"></div>
+                                }
+                                <div style="float:left">&nbsp;</div>
+                                <!--Show the forward arrow to go to next page-->
+                                @if (Convert.ToInt32(page) < @Model.PageNoList.Count())
+                                {
+                                    var pageNo = Convert.ToInt32(page) + 1;
+                                    <a href="javascript:window.location.href=GetHref(@pageNo);" class="pageRight"></a>
+                                    //@Html.ActionLink(">", "stories", new { PageNumber = Convert.ToInt32(page) + 1 }, new { @class = "pageRight" })
+                                }
+                                else
+                                {
+                                    <div class="pageRightD"></div>
+                                }
+                            </div>
+                        }
                     }
                 }
             </div>
@@ -102,7 +106,7 @@ Caching... want to create a service that would run every 10 minutes and refresh 
     <div class="containerBig">
         <div class="containerInner">
             @if (Model.Stories.Count == 0)
-            { 
+            {
                 <div class="storyText"><br /><br />No results returned for your search.<br /><br /></div>
             }
             @foreach (var item in Model.Stories)
@@ -138,18 +142,21 @@ Caching... want to create a service that would run every 10 minutes and refresh 
     <div style="clear:both; height:10px;"></div>
     <div style="text-align:center;">
         Page:&nbsp;&nbsp;
-        @foreach (string page in Model.PageNoList)
+        @if (Model != null && Model.PageNoList != null)
         {
-            if (page != Model.currentPage)
+            foreach (string page in Model.PageNoList)
             {
-                <a href="javascript:window.location.href=GetHref(@page);">@page</a>
-                //@Html.ActionLink(@page, "stories", new { PageNumber = @page })
+                if (page != Model.currentPage)
+                {
+                    <a href="javascript:window.location.href=GetHref(@page);">@page</a>
+                    //@Html.ActionLink(@page, "stories", new { PageNumber = @page })
+                }
+                else
+                {
+                    @page
+                }
+                <span>&nbsp;</span>
             }
-            else
-            {
-                @page
-            }
-            <span>&nbsp;</span>
         }
     </div>
     <div style="clear:both; height:10px;"></div>
