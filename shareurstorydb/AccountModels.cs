@@ -30,6 +30,7 @@ namespace shareurstorydb
         public string UserName { get; set; }
         [DefaultValue(true)]
         public bool? isActive { get; set; }
+        public string UserAlias { get; set; }
     }
 
     public class RegisterExternalLoginModel
@@ -86,6 +87,10 @@ namespace shareurstorydb
         [Required]
         [Display(Name = "User name")]
         public string UserName { get; set; }
+
+        [Required]
+        [Display(Name = "Alias")]
+        public string UserAlias { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
