@@ -110,6 +110,7 @@ namespace shareyourstory.net.Controllers
                     model.isActive = true;
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
                     WebSecurity.Login(model.UserName, model.Password);
+                    SaveAlias(model);
                     SaveUserSession(model.UserName);
 
                     UpdateIsActive(true);
@@ -125,6 +126,7 @@ namespace shareyourstory.net.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
 
         //
         // POST: /Account/Disassociate
@@ -524,6 +526,17 @@ namespace shareyourstory.net.Controllers
             }
             return "Fail";
         }
+
+        private void SaveAlias(RegisterModel model)
+        {
+            MyStoryContext db = new MyStoryContext();
+            var user = (from u in db.UserProfiles
+                        where u.UserName == model.UserName
+                        select u).FirstOrDefault<UserProfile>();
+            user.UserAlias = model.UserAlias;
+            db.SaveChanges();
+        }
+
         #endregion
     }
 }

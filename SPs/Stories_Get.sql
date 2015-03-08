@@ -1,3 +1,4 @@
+use ShareUrStoryNew3
 IF EXISTS(SELECT * FROM sys.all_objects WHERE name = 'Stories_Get')
 	DROP PROC Stories_Get
 
@@ -29,9 +30,34 @@ BEGIN
 		,IsFavorite bit
 		,IsFollowed bit)
 
-	Insert Into @tmpStories(ID, UserId, Title, Post, Name, CreateDate, Likes, Readings, IsFavorite, IsFollowed)
-	Select u.ID, u.UserId, u.Title, u.Post, up.UserName, u.CreateDate, 0, 0,
-		Case When fa.ID Is Not Null Then 1 Else 0 End, Case When fw.ID Is Not Null Then 1 Else 0 End
+	Insert Into @tmpStories(
+		ID
+		,UserId
+		,Title
+		,Post
+		,Name
+		,CreateDate
+		,Likes
+		,Readings
+		,IsFavorite
+		,IsFollowed)
+	Select 
+		u.ID
+		,u.UserId
+		,u.Title
+		,u.Post
+		,Coalesce(up.UserAlias, up.UserName) as UserName
+		,u.CreateDate
+		,0
+		,0
+		,Case 
+			When fa.ID Is Not Null Then 1 
+			Else 0 
+		End
+		,Case 
+			When fw.ID Is Not Null Then 1 
+			Else 0 
+		End
 	From UserPosts u
 	Left Join UserProfile up on u.UserId = up.UserId
 	Left Join UserFavorites fa on u.Id = fa.StoryId And fa.UserId = @UserId

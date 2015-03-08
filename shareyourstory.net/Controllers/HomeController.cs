@@ -77,12 +77,6 @@ namespace shareyourstory.net.Controllers
 
                 //Initialize the stories properties
                 PopulateDDL(stories);
-                ////Do Searching
-                //Searching(stories, searchText);//collection);
-                ////Do Sorting
-                //Sorting(stories, sortOption);//collection);
-                ////Do Paging
-                //Paging(stories);
 
                 return View(stories);
             }
