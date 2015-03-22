@@ -8,6 +8,7 @@
 
 
 <script src="@Url.Content("~/Scripts/app-viewpost.js")" language="javascript" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/google_apis.js")" language="javascript" type="text/javascript"></script>
 
 <div id="fb-root"></div>
 <script src="http://connect.facebook.net/en_US/all.js#appId=@ViewData["AppID"]&amp;xfbml=1"></script>
@@ -120,14 +121,23 @@
         <div style="clear:both;"></div>
         <div class="containerStory">
             <div style="float:left;">
-                <div style="float:left; width:90px; overflow:hidden;">
-                    <fb:like href='@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook"].ToString() + "/Home/@Model.Stories[0].ID")' send="false" layout="button_count" show_faces="false" font="lucida grande" />
+                <div style="float:left; width:46px;">
+                    <fb:like href='@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook"].ToString() + "/Home/@Model.Stories[0].ID")' send="false" layout="button" show_faces="false" font="lucida grande" />
                 </div>
                 <div style="float:left;">
                     <style> html .fb_share_button { display: -moz-block; display:block; color:#3B5998; line-height:18px; width:60px; height:21px; background:url('/Content/images/fbshare_bg.jpg') no-repeat top right; background-size: 60px 20px; margin-left:5px; padding-top:1px; }</style>
                     <a rel="nofollow" href='@Html.Raw("http://www.facebook.com/share.php?u=u=" + ConfigurationManager.AppSettings["UrlForFacebook"].ToString() + "/Home/ViewPost/" + Model.Stories[0].ID.ToString())'
                        class="fb_share_button" onclick="return fbs_click()" target="_blank" style="text-decoration:none;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Share</a>
                 </div>
+                <div style="float:left; padding-left:3px;">
+                    <div class="g-plusone" data-size="medium" data-annotation="none" data-href='@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook"].ToString() + "/Home/@Model.Stories[0].ID")'></div>
+
+                    <a href="//www.pinterest.com/pin/create/button/?url=@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook"].ToString() + "/Home/@Model.Stories[0].ID")&description=Next%20stop%3A%20Pinterest" data-pin-do="buttonPin" data-pin-config="none"><img src="//assets.pinterest.com/images/pidgets/pinit_fg_en_rect_gray_20.png" /></a>
+                    <script type="text/javascript" async defer src="//assets.pinterest.com/js/pinit.js"></script>
+
+                    <a href="https://twitter.com/share" class="twitter-share-button" data-url='@Html.Raw(ConfigurationManager.AppSettings["UrlForFacebook"].ToString() + "/Home/@Model.Stories[0].ID")' data-via="shareurstory" data-count="none" style="height:25px;">Tweet</a>
+                    <script>!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } }(document, 'script', 'twitter-wjs');</script>
+                </div>    
             </div>
             <div style="float:right;">
                 <b>Created Date:</b> @Html.Raw(Model.Stories[0].CreateDate.ToString("MMMM dd, yyyy")) &nbsp;|&nbsp;

@@ -30,7 +30,7 @@ namespace shareurstorydb
         public DbSet<ExternalUserInformation> ExternalUsers { get; set; }
         public DbSet<OAuthMembership> OAuthMemberships { get; set; }
     }
-
+    
     public class CreateDb : DropCreateDatabaseIfModelChanges<MyStoryContext>
     //public class CreateDb : DropCreateDatabaseAlways<MyStoryContext>
     {

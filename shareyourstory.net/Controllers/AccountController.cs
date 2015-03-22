@@ -12,6 +12,8 @@ using shareyourstory.net.Filters;
 using shareurstorydb;
 using Microsoft.Web.Helpers;
 using System.Web.Services;
+using System.Web;
+using System.Net;
 
 namespace shareyourstory.net.Controllers
 {
@@ -263,6 +265,23 @@ namespace shareyourstory.net.Controllers
             if (result.ExtraData.Keys.Contains("accesstoken"))
             {
                 Session["facebooktoken"] = result.ExtraData["accesstoken"];
+
+                WebResponse response = null;
+                string pictureUrl = string.Empty;
+                try
+                {
+                    WebRequest request = WebRequest.Create(string.Format("https://graph.facebook.com/{0}/picture", result.ProviderUserId));
+                    response = request.GetResponse();
+                    pictureUrl = response.ResponseUri.ToString();
+                }
+                catch (Exception ex)
+                {
+                    //? handle
+                }
+                finally
+                {
+                    if (response != null) response.Close();
+                }
             }
 
             if (OAuthWebSecurity.Login(result.Provider, result.ProviderUserId, createPersistentCookie: false))
