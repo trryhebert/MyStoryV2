@@ -25,6 +25,7 @@ namespace shareurstorydb
         public DbSet<PostReadings> PostReadings { get; set; }
         public DbSet<Contacts> Contacts { get; set; }
         public DbSet<Logs> Logs { get; set; }
+        public DbSet<UserJournal> UserJournals { get; set; }
 
         public DbSet<UserProfile> UserProfiles { get; set; }
         public DbSet<ExternalUserInformation> ExternalUsers { get; set; }

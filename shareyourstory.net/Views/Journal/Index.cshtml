@@ -1,0 +1,77 @@
+﻿@using shareurstorydb;
+@using PagedList;
+@using shareyourstory.net.Controllers.Helpers;
+
+@model PagedList.IPagedList<shareurstorydb.UserJournal>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    UserProfile currentUser = (UserProfile)ViewBag.CurrentUser;
+    //ViewBag.Title = "My Story - " + currentUser.Firstname + " " + currentUser.Lastname;
+    ViewBag.Title = "My Story - " + User.Identity.Name;
+}
+<div class="containerBig">
+    <div class="containerInner">
+        <div class="containerTitle"><div class="containerTitleText">Welcome - @User.Identity.Name</div></div>
+        <div style="clear:both;"></div>
+        <div class="containerStory">
+            <br />
+            @Html.ActionLink("+ Create new daily journal", "Create", null, new { @class = "genericLink", @style="font-size:16px" })
+            <div style="border-left: 3px solid #828E3C; padding-left: 10px">
+                @foreach (UserJournal post in Model)
+                { 
+                    <div style="margin: 20px 0 20px 0; border-bottom: 1px solid #828E3C;">
+                        <a class="genericLink" style="font-size:larger" href='@Url.Action("View", new { id = post.ID })'>
+                            @post.UpdateDate.ToString("yyyy-MM-dd") - @post.Title
+                        </a>&nbsp; 
+                        @if (post.isActive == true)
+                        { 
+                            <span>Active </span>
+                        }
+                        else
+                        {                            
+                            <span>Inactive </span>
+                        }
+                        <a class="genericLink" href='@Url.Action("Edit", new { id = post.ID })'>(Edit)</a>
+                        <div>
+                            @Html.Raw(shareyourstory.net.Controllers.Helpers.SanitizeHtml.ShortenAndStripHtml(post.Post.ToString(), 150))
+                        </div>
+                    </div>
+                }
+            </div>
+            @if (Model.PageCount > 1)
+            {
+                <div style="text-align: center; width: 100%;">
+                    <p>
+                        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                        of @Model.PageCount
+                    </p>
+                    @if (Model.HasPreviousPage)
+                    {
+                        @Html.ActionLink("<<", "Index", new { page = 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }, new { @class = "genericLink" })
+                        @Html.Raw(" ");
+                        @Html.ActionLink("< Prev", "Index", new { page = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }, new { @class = "genericLink" })
+                    }
+                    else
+                    {
+                        @:<<
+                        @Html.Raw(" ");
+                        @:< Prev
+                        }
+                    @if (Model.HasNextPage)
+                    {
+                        @Html.ActionLink("Next >", "Index", new { page = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }, new { @class = "genericLink" })
+                        @Html.Raw(" ");
+                        @Html.ActionLink(">>", "Index", new { page = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }, new { @class = "genericLink" })
+                    }
+                    else
+                    {
+                        @:Next >
+                        @Html.Raw(" ")
+                        @:>>
+                        }
+                </div>
+            }
+            <br /><br />
+        </div>
+    </div>
+</div>
