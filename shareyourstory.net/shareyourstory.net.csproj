@@ -211,6 +211,7 @@
     <Compile Include="Controllers\Helpers\ControllerHelpers.cs" />
     <Compile Include="Controllers\Helpers\SanitizeHtml.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\JournalController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -455,6 +456,10 @@
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.eot" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.ttf" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.woff" />
+    <!-- <Content Include="Scripts\tiny_mce\themes\advanced\img\Thumbs.db" /> -->
+    <Content Include="Views\Journal\Edit.cshtml" />
+    <Content Include="Views\Journal\Index.cshtml" />
+    <Content Include="Views\Journal\View.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

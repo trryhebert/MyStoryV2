@@ -303,12 +303,23 @@ namespace shareyourstory.net.Controllers
                 ViewBag.ProviderDisplayName = OAuthWebSecurity.GetOAuthClientData(result.Provider).DisplayName;
                 ViewBag.ReturnUrl = returnUrl;
 
+                string name = "";
+                string link = "";
+                try
+                {
+                    name = result.ExtraData["name"];
+                    link = result.ExtraData["link"];
+                }
+                catch (Exception)
+                {
+                }
+
                 return View("ExternalLoginConfirmation", new RegisterExternalLoginModel
                 {
                     UserName = result.UserName,
                     ExternalLoginData = loginData,
-                    FullName = result.ExtraData["name"],
-                    Link = result.ExtraData["link"]
+                    FullName = name,
+                    Link = link
                 });
             }
         }

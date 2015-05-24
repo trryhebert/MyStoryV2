@@ -214,4 +214,17 @@ namespace shareurstorydb
         public DateTime CreateDate { get; set; }
     }
 
+    public class UserJournal
+    {
+        public int ID { get; set; }
+        public int UserId { get; set; }
+        public String Title { get; set; }
+        public String Post { get; set; }
+        public String Name { get; set; }
+        public int Likes { get; set; }
+        public DateTime CreateDate { get; set; }
+        public DateTime UpdateDate { get; set; }
+        public bool isActive { get; set; }
+    }
+
 }
