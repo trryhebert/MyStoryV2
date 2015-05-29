@@ -50,6 +50,24 @@
     //        staffid: "991234"
     //    }
     //});
+
+    function deleteJournal() {
+        $.ajax({
+            url: '/Journal/Delete',
+            data: { id: '@Model.ID' },
+            type: "POST",
+            success: function (response) {
+                if (response == 'success')
+                    window.location = '/Journal';
+                else
+                    alert(response);
+            },
+            error: function (e) {
+                //alert(e.responseText);
+                alert('An error occured while deleting this entry, please try again.');
+            }
+        });
+    }
 </script>
 @using(Html.BeginForm("Save", "Journal"))
 {
