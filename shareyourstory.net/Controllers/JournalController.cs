@@ -88,7 +88,9 @@ namespace shareyourstory.net.Controllers
                     Title = "",
                     Post = "",
                     UserId = User.UserId,
-                    isActive = true
+                    isActive = true,
+                    CreateDate = DateTime.Now,
+                    UpdateDate = DateTime.Now
                 };
                 return View("Edit", post);
             }
