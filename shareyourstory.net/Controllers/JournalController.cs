@@ -212,5 +212,29 @@ namespace shareyourstory.net.Controllers
                 return null;
             }
         }
+
+        [HttpPost]
+        public string Delete(string id)
+        {
+            try
+            {
+                int newid = Convert.ToInt32(id);
+                var qry = (from p in DbContext.UserJournals
+                           where p.ID == newid
+                           select p).FirstOrDefault();
+                DbContext.UserJournals.Remove(qry);
+                DbContext.SaveChanges();
+
+                return "success";
+            }
+            catch (Exception ex)
+            {
+                string failMessage = "";
+                ControllerHelpers.LogError(DbContext, ex, out failMessage);
+                return "An error occured while deleting this entry, please try again.";
+                //return null;
+            }
+
+        }
     }
 }
